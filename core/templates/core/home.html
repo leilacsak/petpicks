@@ -1,14 +1,19 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
-<h1>PetPicks</h1>
-<ol>
-    <li>Enter your pet.</li>
-    <li>Win badges.</li>
-    <li>Have fun.</li>
-</ol>
-
-<a href="#">Enter the Draw</a>
+<section class="hero">
+    <div class="hero-overlay">
+        <h1>Welcome to PetPicks!</h1>
+        <p>Your chance to win amazing prizes by sharing your beloved pets.</p>
+        <ol>
+            <li>Enter your pet.</li>
+            <li>Win badges.</li>
+            <li>Have fun.</li>
+        </ol>
+        <a href="#" class="btn btn-primary" id="join_now">Join Now</a>
+    </div>
+</section>
 
 {% endblock %}
