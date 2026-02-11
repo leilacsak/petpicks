@@ -2,40 +2,69 @@
 
 {% block content %}
 
-<h1>About PetPicks</h1>
-<p>
-    PetPicks is a community engagement platform designed for pet owners who enjoy fun and friendly competitions.
-    Users can upload a photo of their pet and enter active lottery rounds for a chance to win digital achievement
-    badges.
-</p>
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <h1 class="display-5 mb-4 text-center align-items-center">About PetPicks</h1>
 
-<p>
-    Each lottery round is managed by an administrator to ensure fairness and transparency.
-    Only approved entries are included in the draw, and winners are selected randomly.
-</p>
+            <p class="lead mb-4">
+                PetPicks is a community engagement platform designed for pet owners who enjoy fun and friendly
+                competitions.
+                Users can upload a photo of their pet and enter active lottery rounds for a chance to win digital
+                achievement
+                badges.
+            </p>
 
-<p>
-    PetPicks focuses on creativity, community participation, and positive engagement.
-    No monetary rewards are involved - winners receive digital badges as recognition.
-</p>
+            <p class="mb-4">
+                Each lottery round is managed by an administrator to ensure fairness and transparency.
+                Only approved entries are included in the draw, and winners are selected randomly.
+            </p>
 
-<p>Have fun!</p>
-<ul>
-    <li>Upload a photo</li>
-    <li>Enter a Draw</li>
-    <li>Win a Badge</li>
-</ul>
-<h2>How It Works</h2>
+            <p class="mb-5">
+                PetPicks focuses on creativity, community participation, and positive engagement.
+                No monetary rewards are involved - winners receive digital badges as recognition.
+            </p>
 
-<ol>
-    <li>Create an account and log in to PetPicks</li>
-    <li>Browse active lottery rounds and find one you like</li>
-    <li>Upload a photo of your pet and fill in the entry details</li>
-    <li>Submit your entry before the round deadline</li>
-    <li>Wait for the administrator to review and approve your entry</li>
-    <li>Once approved, your pet is included in the random draw</li>
-    <li>Check back to see if you've won a digital badge</li>
-    <li>Display your badges on your profile and celebrate with the community</li>
-</ol>
+            <p class="text-center fs-5 fw-bold mb-5">Have fun!</p>
+
+            <div class="card mb-5 border-0 bg-light">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">Get Started in 3 Steps</h3>
+                    <ul class="list-unstyled d-flex justify-content-center gap-4">
+                        <li>
+                            <span class="badge bg-secondary me-2">1</span>
+                            <span class="fw-bold">Upload a photo</span>
+                        </li>
+                        <li>
+                            <span class="badge bg-secondary me-2">2</span>
+                            <span class="fw-bold">Enter a Draw</span>
+                        </li>
+                        <li>
+                            <span class="badge bg-secondary me-2">3</span>
+                            <span class="fw-bold">Win a Badge</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="h3 mb-4 text-center">How It Works</h2>
+
+            <ol class="ps-3 mx-auto" style="max-width: fit-content;">
+                <li class="mb-3">Create an account and log in to PetPicks</li>
+                <li class="mb-3">Browse active lottery rounds and find one you like</li>
+                <li class="mb-3">Upload a photo of your pet and fill in the entry details</li>
+                <li class="mb-3">Submit your entry before the round deadline</li>
+                <li class="mb-3">Wait for the administrator to review and approve your entry</li>
+                <li class="mb-3">Once approved, your pet is included in the random draw</li>
+                <li class="mb-3">Check back to see if you've won a digital badge</li>
+                <li>Display your badges on your profile and celebrate with the community</li>
+            </ol>
+
+            <div class="text-center mt-5">
+                <a href="{% url 'home' %}" class="btn btn-primary btn-lg">Back to Home</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

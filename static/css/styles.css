@@ -10,19 +10,26 @@
 }
 
 /* Global Styles */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /*Button Styles*/
 .btn-primary {
   background-color: var(--primary-color);
   border: none;
-  padding: 10px 20px;
   font-size: 1.2rem;
   border-radius: 5px;
   transition: background-color 0.3s ease;
@@ -32,31 +39,122 @@ body {
   background-color: var(--secondary-color);
 }
 
+/* Badge Styles */
+.badge.bg-secondary {
+  background-color: var(--secondary-color) !important;
+}
+
 /* Navbar Styles */
 .navbar {
-  background-color: var(--primary-color);
+  background-color: var(--primary-color) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-brand {
+  color: white !important;
+  font-weight: 700;
+  font-size: 2rem;
 }
 
 .navbar-brand img {
   border-radius: 8px;
 }
 
+.nav-link {
+  color: white !important;
+  font-weight: 500;
+  padding: 0.5rem 1rem !important;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-color) !important;
+}
+
+.navbar-toggler {
+  border-color: white;
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 /*Hero Section Styles*/
 .hero {
-  background-image: url("../images/hero.png");
+  background-image: url("../images/hero_image.png");
   background-size: cover;
-  background-position: center bottom;
-  height: 70vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .hero-overlay {
   text-align: center;
   color: var(--text-color);
-  padding: 40px;
   border-radius: 10px;
+  max-width: 90%;
+}
+
+.hero-overlay ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Footer Styles */
+footer {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.75rem 0;
+  flex-shrink: 0;
+}
+
+footer p {
+  margin: 0;
+}
+
+/* Main content wrapper */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* Responsive adjustments for larger screens */
+@media (min-width: 768px) {
+  .hero {
+    align-items: flex-start;
+  }
+
+  .hero-overlay {
+    max-width: 700px;
+  }
+}
+
+/* Mobile - content at top, animals visible below */
+@media (max-width: 767px) {
+  .hero {
+    align-items: flex-start;
+    background-position: center bottom;
+  }
+
+  .hero-overlay {
+    padding-top: 0.5rem;
+  }
+}
+
+/* Tablets/Desktop */
+@media (min-width: 768px) {
+  .hero {
+    align-items: flex-start;
+    background-position: center;
+  }
 }
