@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Moderation Queue</h1>
+
+{% if entries %}
+<div class="row">
+    {% for entry in entries %}
+    <div class="col-md-6 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5>{{ entry.pet.name }} ({{ entry.round.title }})</h5>
+
+                <img src="{{ entry.photo.url }}" alt="{{ entry.pet.name }} photo" class="img-fluid mb-2">
+
+                <p>Status: {{ entry.status }}</p>
+
+                <a href="{% url 'approve_entry' entry.id %}" class="btn btn-success btn-sm">
+                    Approve
+                </a>
+
+                <a href="{% url 'reject_entry' entry.id %}" class="btn btn-danger btn-sm">
+                    Reject
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No pending entries.</p>
+{% endif %}
+
+{% endblock %}

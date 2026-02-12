@@ -10,4 +10,15 @@ urlpatterns = [
         name="enter_round",
     ),
     path("my-entries/", views.my_entries, name="my_entries"),
+    path("moderation/", views.moderation_queue, name="moderation_queue"),
+    path(
+        "moderation/<int:entry_id>/approve/",
+        views.approve_entry,
+        name="approve_entry",
+    ),
+    path(
+        "moderation/<int:entry_id>/reject/",
+        views.reject_entry,
+        name="reject_entry",
+    ),
 ]

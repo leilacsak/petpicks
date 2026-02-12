@@ -2,6 +2,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from .models import LotteryRound, Pet, Entry
 from .forms import EntryCreateForm
+from django.contrib.admin.views.decorators import staff_member_required
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseForbidden
 
 
 # Create your views here.
@@ -57,3 +60,29 @@ def my_entries(request):
     return render(request, "lottery/my_entries.html", {"entries": entries})
 
 
+@staff_member_required
+def moderation_queue(request):
+    pending_entries = Entry.objects.filter(
+        status=Entry.Status.PENDING
+    ).select_related("pet", "round")
+    return render(
+        request,
+        "lottery/moderation_queue.html",
+        {"entries": pending_entries}
+    )
+
+
+@staff_member_required
+def approve_entry(request, entry_id):
+    entry = get_object_or_404(Entry, id=entry_id)
+    entry.status = Entry.Status.APPROVED
+    entry.save()
+    return redirect("moderation_queue")
+
+
+@staff_member_required
+def reject_entry(request, entry_id):
+    entry = get_object_or_404(Entry, id=entry_id)
+    entry.status = Entry.Status.REJECTED
+    entry.save()
+    return redirect("moderation_queue")
