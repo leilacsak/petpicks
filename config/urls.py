@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path("", include("core.urls")),
+    path("", include("lottery.urls")),
 ]
 
 # Serve static files during development

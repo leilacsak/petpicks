@@ -5,6 +5,7 @@
   --primary-color: #86afc6;
   --secondary-color: #c9a477;
   --background-color: #f9f9f9;
+  --drawcard-color: #9c8c73;
   --text-color: #333;
   --font-family: "Nunito", sans-serif;
 }
@@ -24,6 +25,14 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+/* Main content wrapper */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
 /*Button Styles*/
@@ -118,14 +127,6 @@ footer {
 
 footer p {
   margin: 0;
-}
-
-/* Main content wrapper */
-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
 }
 
 /* Responsive adjustments for larger screens */

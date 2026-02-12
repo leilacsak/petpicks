@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h1>Active Lottery Rounds</h1>
+
+    {% if rounds %}
+    <div class="mb-4">
+        <p>Explore the current active lottery rounds and enter for a chance to win!</p>
+    </div>
+    <div class="row">
+        {% for round in rounds %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <div class="text-center">
+                        <h5>{{ round.title }}</h5>
+                        <p>
+                            Starts: {{ round.start_date }}<br>
+                            Ends: {{ round.end_date }}
+                        </p>
+
+                        <a href="#" class="btn btn-primary">Enter</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No active rounds at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}
