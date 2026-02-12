@@ -18,14 +18,11 @@
                         <p>
                             Starts: {{ round.start_date }}<br>
                             Ends: {{ round.end_date }}
-                        </p>
-
-                        <a href="#" class="btn btn-primary">Enter</a>
+                        </p> <a href="{% url 'enter_round' round.id %}" class="btn btn-primary">Enter</a>
                     </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
+        </div> {% endfor %}
     </div>
     {% else %}
     <p>No active rounds at the moment.</p>
