@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">My Profile</h1>
+
+    <h2 class="mt-4">Notifications</h2>
+    {% if notifications %}
+    <ul class="list-group mb-4">
+        {% for n in notifications %}
+        <li class="list-group-item">
+            {{ n.message }}
+            <div class="small text-muted">{{ n.created_at }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No notifications yet.</p>
+    {% endif %}
+
+    <h2 class="mt-4">Earned Badges</h2>
+    {% if badges %}
+    <ul class="list-group mb-4">
+        {% for badge in badges %}
+        <li class="list-group-item">
+            <strong>{{ badge.badge.name }}</strong> - {{ badge.round.title }} (Awarded on {{
+            award.awarded_at|date:"Y-m-d" }})
+            <div class="small text-muted">{{award.awarded_at }}</div>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>You have no earned badges yet.</p>
+    {% endif %}
+
+    <h2 class="mt-4">My Entries</h2>
+    <div>
+        {% if entries %}
+        <ul class="list-group mb-4">
+            {% for entry in entries %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ entry.pet.name }}</strong> — {{ entry.round.title }}
+                    <div class="small text-muted">Status: {{ entry.status }}
+                        <br>
+                        {% if entry.is_winner %} Winner{% endif %}
+                    </div>
+                </div>
+                {% if entry.photo %}
+                <img src="{{ entry.photo.url }}" alt="{{ entry.pet.name }} photo" style="height:100px; width:auto;">
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>You have no entries yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

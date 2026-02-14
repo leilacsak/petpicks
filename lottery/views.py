@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
-from .models import LotteryRound, Pet, Entry
+from .models import LotteryRound, Pet, Entry, Badge, BadgeAward, Notification
 from .forms import EntryCreateForm
 from django.contrib.admin.views.decorators import staff_member_required
 import random
@@ -53,12 +53,35 @@ def enter_round(request, round_id):
 
 
 @login_required
-def my_entries(request):
-    entries = Entry.objects.filter(
-        pet__owner=request.user
-    ).select_related("round", "pet").order_by("-submitted_at")
-    return render(request, "lottery/my_entries.html", {"entries": entries})
+@login_required
+def profile(request):
+    entries = (
+        Entry.objects.filter(pet__owner=request.user)
+        .select_related("pet", "round")
+        .order_by("-submitted_at")
+    )
 
+    badges = (
+        BadgeAward.objects.filter(user=request.user)
+        .select_related("badge", "round")
+        .order_by("-awarded_at")
+    )
+
+    notifications = (
+        Notification.objects.filter(user=request.user)
+        .order_by("-created_at")
+    )
+
+    return render(
+        request,
+        "lottery/profile.html",
+        {
+            "entries": entries,
+            "badges": badges,
+            "notifications": notifications,
+        },
+    )
+    
 
 @staff_member_required
 def moderation_queue(request):
@@ -112,10 +135,23 @@ def run_draw(request, round_id):
 
     winner_count = 3 if len(eligible) >= 3 else len(eligible)
     winners = random.sample(eligible, winner_count)
+    
+    winner_badge, _ = Badge.objects.get_or_create(
+        name="Winner",
+        defaults={
+            "description": "Awarded for winning a PetPicks lottery round."
+        }
+    )
 
     for entry in winners:
         entry.is_winner = True
         entry.save()
+        
+        BadgeAward.objects.get_or_create(
+            user=entry.pet.owner,
+            badge=winner_badge,
+            round=round_obj,
+        )
 
     round_obj.drawn_at = timezone.now()
     round_obj.status = LotteryRound.Status.COMPLETED

@@ -9,7 +9,7 @@ urlpatterns = [
         views.enter_round,
         name="enter_round",
     ),
-    path("my-entries/", views.my_entries, name="my_entries"),
+    path("profile/", views.profile, name="profile"),
     path("moderation/", views.moderation_queue, name="moderation_queue"),
     path(
         "moderation/<int:entry_id>/approve/",
