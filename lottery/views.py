@@ -26,7 +26,11 @@ def enter_round(request, round_id):
     
     # Check if user has already submitted to this round
     if Entry.objects.filter(pet__owner=request.user, round=round_obj).exists():
-        messages.error(request, "You have already submitted an entry to this round. Only one entry per round is allowed.")
+        messages.error(
+            request,
+            "You have already submitted an entry to this round. "
+            "Only one entry per round is allowed."
+        )
         return redirect("round_list")
     
     if request.method == "POST":
