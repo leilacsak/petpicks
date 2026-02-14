@@ -23,9 +23,8 @@
     <ul class="list-group mb-4">
         {% for badge in badges %}
         <li class="list-group-item">
-            <strong>{{ badge.badge.name }}</strong> - {{ badge.round.title }} (Awarded on {{
-            award.awarded_at|date:"Y-m-d" }})
-            <div class="small text-muted">{{award.awarded_at }}</div>
+            <strong>{{ badge.badge.name }}</strong> - {{ badge.round.title }} (Awarded on {{ badge.awarded_at|date:"Y-m-d" }})
+            <div class="small text-muted">{{ badge.awarded_at }}</div>
         </li>
         {% endfor %}
     </ul>
@@ -36,22 +35,28 @@
     <h2 class="mt-4">My Entries</h2>
     <div>
         {% if entries %}
-        <ul class="list-group mb-4">
+        <div class="row">
             {% for entry in entries %}
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <div>
-                    <strong>{{ entry.pet.name }}</strong> — {{ entry.round.title }}
-                    <div class="small text-muted">Status: {{ entry.status }}
-                        <br>
-                        {% if entry.is_winner %} Winner{% endif %}
+            <div class="col-md-6 mb-4">
+                <div class="card mt-3">
+                    <img src="{{ entry.photo.url }}" class="card-img-top" alt="{{ entry.pet.name }} photo"
+                        style="object-fit: contain; width: 100%; height: 250px;">
+
+                    <div class="card-body">
+                        <p><strong>Round:</strong> {{ entry.round.title }}</p>
+                        <p><strong>Status:</strong> {{ entry.status }}
+                            {% if entry.is_winner %}
+                            • Winner 🏆
+                            {% endif %}
+                        </p>
+                        <p><strong>Breed:</strong> {{ entry.pet.breed }}</p>
+                        <p><strong>Age:</strong> {{ entry.pet.age }}</p>
+                        <p><strong>Submitted:</strong> {{ entry.submitted_at }}</p>
                     </div>
                 </div>
-                {% if entry.photo %}
-                <img src="{{ entry.photo.url }}" alt="{{ entry.pet.name }} photo" style="height:100px; width:auto;">
-                {% endif %}
-            </li>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
         {% else %}
         <p>You have no entries yet.</p>
         {% endif %}

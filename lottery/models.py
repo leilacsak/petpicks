@@ -115,8 +115,23 @@ class Notification(models.Model):
         on_delete=models.CASCADE,
         related_name="notifications",
     )
+    round = models.ForeignKey(
+        LotteryRound,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+        null=True,
+        blank=True,
+    )
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["user", "round"],
+                name="unique_notification_per_round"
+            ),
+        ]
 
     def __str__(self):
         return f"To {self.user} @ {self.created_at:%Y-%m-%d %H:%M}"

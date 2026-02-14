@@ -1,34 +1,45 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Moderation Queue</h1>
+<div class="container py-4">
+    <h1 class="mb-4">Moderation Queue</h1>
 
-{% if entries %}
-<div class="row">
-    {% for entry in entries %}
-    <div class="col-md-6 mb-3">
-        <div class="card">
-            <div class="card-body">
-                <h5>{{ entry.pet.name }} ({{ entry.round.title }})</h5>
+    {% if entries %}
+    <div class="row">
+        {% for entry in entries %}
+        <div class="col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ entry.photo.url }}" class="card-img-top" alt="{{ entry.pet.name }} photo"
+                    style="object-fit: contain; height: auto; max-height: 400px; padding: 10px;">
 
-                <img src="{{ entry.photo.url }}" alt="{{ entry.pet.name }} photo" class="img-fluid mb-2">
+                <div class="card-body">
+                    <h5 class="card-title">{{ entry.pet.name }}</h5>
 
-                <p>Status: {{ entry.status }}</p>
+                    <p class="card-text mb-3">
+                        <strong>Round:</strong> {{ entry.round.title }}<br>
+                        <strong>Breed:</strong> {{ entry.pet.breed }}<br>
+                        <strong>Age:</strong> {{ entry.pet.age }}<br>
+                        <strong>Submitted:</strong> {{ entry.submitted_at|date:"Y-m-d H:i" }}
+                    </p>
 
-                <a href="{% url 'approve_entry' entry.id %}" class="btn btn-success btn-sm">
-                    Approve
-                </a>
-
-                <a href="{% url 'reject_entry' entry.id %}" class="btn btn-danger btn-sm">
-                    Reject
-                </a>
+                    <div class="d-grid gap-2 d-md-flex">
+                        <a href="{% url 'approve_entry' entry.id %}" class="btn btn-success flex-fill">
+                            ✓ Approve
+                        </a>
+                        <a href="{% url 'reject_entry' entry.id %}" class="btn btn-danger flex-fill">
+                            ✗ Reject
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        <h4 class="alert-heading">All Clear!</h4>
+        <p>No pending entries to review.</p>
+    </div>
+    {% endif %}
 </div>
-{% else %}
-<p>No pending entries.</p>
-{% endif %}
-
 {% endblock %}

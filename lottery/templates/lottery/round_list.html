@@ -32,7 +32,11 @@
         {% endfor %}
     </div>
     {% else %}
+    <div class="alert alert-info" role="alert">
+    <h4 class="alert-heading">All Clear!</h4>
     <p>No active rounds at the moment.</p>
+    </div>
     {% endif %}
 </div>
 {% endblock %}
+

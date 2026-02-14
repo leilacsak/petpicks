@@ -6,9 +6,8 @@ from django.contrib.admin.views.decorators import staff_member_required
 import random
 from django.utils import timezone
 from django.contrib import messages
+from django.http import HttpResponseForbidden
 
-
-# Create your views here.
 
 def round_list(request):
     rounds = LotteryRound.objects.filter(
@@ -25,6 +24,11 @@ def enter_round(request, round_id):
         status=LotteryRound.Status.ACTIVE
     )
     
+    # Check if user has already submitted to this round
+    if Entry.objects.filter(pet__owner=request.user, round=round_obj).exists():
+        messages.error(request, "You have already submitted an entry to this round. Only one entry per round is allowed.")
+        return redirect("round_list")
+    
     if request.method == "POST":
         form = EntryCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -40,7 +44,8 @@ def enter_round(request, round_id):
                 pet=pet,
                 photo=form.cleaned_data["photo"],
             )
-            return redirect("my_entries")
+            messages.success(request, "Entry submitted successfully!")
+            return redirect("profile")
     
     else:
         form = EntryCreateForm()
@@ -52,7 +57,6 @@ def enter_round(request, round_id):
     )
 
 
-@login_required
 @login_required
 def profile(request):
     entries = (
@@ -153,6 +157,31 @@ def run_draw(request, round_id):
             round=round_obj,
         )
 
+    winner_ids = {e.id for e in winners}
+
+    all_entries = Entry.objects.filter(
+        round=round_obj,
+        status=Entry.Status.APPROVED
+    ).select_related("pet__owner", "pet")
+
+    for entry in all_entries:
+        if entry.id in winner_ids:
+            msg = (
+                f"Congratulations! '{entry.pet.name}' won the "
+                f"'{round_obj.title}' lottery! 🏆"
+            )
+        else:
+            msg = (
+                f"Thanks for entering '{round_obj.title}'. "
+                "Not selected this time.Try again next time! 😊"
+            )
+
+        Notification.objects.get_or_create(
+            user=entry.pet.owner,
+            round=round_obj,
+            defaults={"message": msg}
+        )
+
     round_obj.drawn_at = timezone.now()
     round_obj.status = LotteryRound.Status.COMPLETED
     round_obj.save()
@@ -168,3 +197,23 @@ def results(request):
         status=LotteryRound.Status.COMPLETED
     ).prefetch_related('entries').order_by("-drawn_at")
     return render(request, "lottery/results_list.html", {"rounds": rounds})
+
+
+@login_required
+def entry_detail(request, entry_id):
+    entry = get_object_or_404(
+        Entry.objects.select_related("pet", "round"),
+        id=entry_id
+    )
+
+    # Access control
+    if entry.pet.owner != request.user:
+        return HttpResponseForbidden(
+            "You do not have permission to view this entry."
+        )
+
+    return render(
+        request,
+        "lottery/entry_detail.html",
+        {"entry": entry}
+    )
