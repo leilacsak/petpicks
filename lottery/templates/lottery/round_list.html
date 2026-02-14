@@ -13,16 +13,23 @@
         <div class="col-md-4 mb-3">
             <div class="card">
                 <div class="card-body">
-                    <div class="text-center">
+                    <div>
                         <h5>{{ round.title }}</h5>
                         <p>
                             Starts: {{ round.start_date }}<br>
                             Ends: {{ round.end_date }}
-                        </p> <a href="{% url 'enter_round' round.id %}" class="btn btn-primary">Enter</a>
+                        </p>
+                        <a href="{% url 'enter_round' round.id %}" class="btn btn-primary">Enter</a>
+                        {% if user.is_staff %}
+                        <a href="{% url 'run_draw' round.id %}" class="btn btn-warning float-end">
+                            Run Draw
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
-        </div> {% endfor %}
+        </div>
+        {% endfor %}
     </div>
     {% else %}
     <p>No active rounds at the moment.</p>

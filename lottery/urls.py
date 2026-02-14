@@ -21,4 +21,7 @@ urlpatterns = [
         views.reject_entry,
         name="reject_entry",
     ),
+    path("rounds/<int:round_id>/draw/", views.run_draw, name="run_draw"),
+    path("results/", views.results, name="results_list"),
+
 ]

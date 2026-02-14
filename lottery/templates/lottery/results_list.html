@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <h1>Results</h1>
+
+    {% if rounds %}
+    <div class="row">
+        {% for round in rounds %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ round.title }}</h5>
+                    <p class="card-text">
+                        <strong>Drawn:</strong> {{ round.drawn_at|date:"Y-m-d H:i" }}
+                    </p>
+                    
+                    <h6 class="mt-3">Winners:</h6>
+                    {% with winners=round.entries.all|dictsort:"is_winner" %}
+                        {% if winners %}
+                            <ul class="list-unstyled">
+                                {% for entry in round.entries.all %}
+                                    {% if entry.is_winner %}
+                                    <li class="mb-2">
+                                        <span class="badge bg-success me-2">🏆 Winner</span>
+                                        <strong>{{ entry.pet.name }}</strong> ({{ entry.pet.breed }})
+                                    </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                        <p class="text-muted">No winners yet.</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No results yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
