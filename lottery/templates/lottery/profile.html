@@ -4,7 +4,7 @@
 <div class="container py-4">
     <h1 class="mb-4">My Profile</h1>
 
-    <h2 class="mt-4">Notifications</h2>
+    <h2 class="mb-4">Notifications</h2>
     {% if notifications %}
     <ul class="list-group mb-4">
         {% for n in notifications %}
@@ -18,21 +18,27 @@
     <p>No notifications yet.</p>
     {% endif %}
 
-    <h2 class="mt-4">Earned Badges</h2>
+    <h2 class="mb-4">Earned Badges</h2>
     {% if badges %}
-    <ul class="list-group mb-4">
+    <div class="badge-grid mb-4">
         {% for badge in badges %}
-        <li class="list-group-item">
-            <strong>{{ badge.badge.name }}</strong> - {{ badge.round.title }} (Awarded on {{ badge.awarded_at|date:"Y-m-d" }})
-            <div class="small text-muted">{{ badge.awarded_at }}</div>
-        </li>
+        <div class="badge-card">
+            <div class="badge-card-header">
+                <span class="badge-icon" aria-hidden="true">🏅</span>
+                <div>
+                    <p class="badge-title">{{ badge.badge.name }}</p>
+                    <p class="badge-meta">{{ badge.round.title }}</p>
+                </div>
+            </div>
+            <p class="badge-date">Awarded on {{ badge.awarded_at|date:"Y-m-d" }}</p>
+        </div>
         {% endfor %}
-    </ul>
+    </div>
     {% else %}
     <p>You have no earned badges yet.</p>
     {% endif %}
 
-    <h2 class="mt-4">My Entries</h2>
+    <h2 class="mb-4">My Entries</h2>
     <div>
         {% if entries %}
         <div class="row">
