@@ -15,6 +15,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         crossorigin="anonymous">
 
+    <!--Font Awesome-->
+    <script src="https://kit.fontawesome.com/f562a9a852.js" crossorigin="anonymous"></script>
+
     <!--Custom CSS-->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 
@@ -79,8 +82,21 @@
     </main>
 
     <!--Footer-->
-    <footer class="text-center">
-        <p>&copy; 2026 PetPicks. All rights reserved.</p>
+    <footer class="py-3 border-top">
+        <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
+            <p class="mb-2 mb-md-0">&copy; 2026 PetPicks. All rights reserved.</p>
+            <div class="footer-social d-flex gap-3">
+                <a class="text-decoration-none" href="https://www.facebook.com" aria-label="PetPicks on Facebook">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a class="text-decoration-none" href="https://www.instagram.com" aria-label="PetPicks on Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a class="text-decoration-none" href="https://www.twitter.com" aria-label="PetPicks on Twitter">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
