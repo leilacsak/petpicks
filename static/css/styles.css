@@ -10,29 +10,23 @@
   --font-family: "Nunito", sans-serif;
 }
 
-/* Global Styles */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+/* Global Styles - Scrollable page */
+html {
+  scroll-behavior: smooth;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: var(--font-family);
   background-color: var(--background-color);
   color: var(--text-color);
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
 /* Main content wrapper */
 main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
+  width: 100%;
+  display: block;
 }
 
 /*Button Styles*/
@@ -57,6 +51,9 @@ main {
 .navbar {
   background-color: var(--primary-color) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .navbar-brand {
@@ -92,29 +89,60 @@ main {
 .hero {
   background-image: url("../images/hero_image.png");
   background-size: cover;
-  background-position: center;
+  background-position: center bottom;
   background-repeat: no-repeat;
   width: 100%;
-  position: relative;
+  height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  position: relative;
   margin: 0;
-  padding: 0;
-  flex: 1;
-  overflow: hidden;
+  padding: 2rem 0 0;
 }
 
 .hero-overlay {
   text-align: center;
   color: var(--text-color);
-  border-radius: 10px;
-  max-width: 90%;
+  max-width: 550px;
+  padding: 2rem;
+  margin: 0;
+}
+
+.hero-overlay h1 {
+  margin-bottom: 0.75rem !important;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+}
+
+.hero-overlay p {
+  margin-bottom: 1rem !important;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
+  line-height: 1.4;
 }
 
 .hero-overlay ul {
   list-style: none;
   padding: 0;
+  margin: 0.75rem 0 !important;
+  font-size: clamp(0.85rem, 2.5vw, 1rem);
+}
+
+.hero-overlay li {
+  margin-bottom: 0.5rem !important;
+}
+
+/* Card Styles */
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 200px;
+  object-fit: cover;
 }
 
 /* Footer Styles */
@@ -122,40 +150,51 @@ footer {
   background-color: var(--primary-color);
   color: white;
   padding: 0.75rem 0;
-  flex-shrink: 0;
+  margin-top: 3rem;
+  text-align: center;
+  position: sticky;
+  bottom: 0;
 }
 
 footer p {
   margin: 0;
 }
 
-/* Responsive adjustments for larger screens */
-@media (min-width: 768px) {
-  .hero {
-    align-items: flex-start;
-  }
-
-  .hero-overlay {
-    max-width: 700px;
-  }
-}
-
-/* Mobile - content at top, animals visible below */
+/* Responsive adjustments */
 @media (max-width: 767px) {
   .hero {
-    align-items: flex-start;
     background-position: center bottom;
   }
 
   .hero-overlay {
-    padding-top: 0.5rem;
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .hero-overlay h1 {
+    font-size: clamp(1.3rem, 4vw, 2rem) !important;
+  }
+
+  .hero-overlay p {
+    font-size: clamp(0.85rem, 2.5vw, 1rem) !important;
   }
 }
 
-/* Tablets/Desktop */
 @media (min-width: 768px) {
   .hero {
-    align-items: flex-start;
-    background-position: center;
+    background-position: center 70%;
+  }
+
+  .hero-overlay {
+    max-width: 550px;
+    padding: 1rem;
+  }
+
+  .hero-overlay h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem) !important;
+  }
+
+  .hero-overlay p {
+    font-size: clamp(1rem, 3vw, 1.2rem) !important;
   }
 }

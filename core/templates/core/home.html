@@ -16,4 +16,30 @@
     </div>
 </section>
 
+<section class="container my-5">
+    <h2 class="text-center mb-4">Recent Winning Pets</h2>
+
+    {% if recent_winners %}
+    <div class="row">
+        {% for entry in recent_winners %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if entry.photo %}
+                <img src="{{ entry.photo.url }}" class="card-img-top" alt="{{ entry.pet.name }} winning pet photo">
+                {% else %}
+                <div class="p-5 text-center text-muted">No photo available</div>
+                {% endif %}
+                <div class="card-body text-center">
+                    <h5 class="card-title">{{ entry.pet.name }}</h5>
+                    <p class="small text-muted">{{ entry.round.title }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-muted">No winners yet. Be the first to enter your pet!</p>
+    {% endif %}
+</section>
+
 {% endblock %}
