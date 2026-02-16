@@ -13,8 +13,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 from pathlib import Path
 import os
 import dj_database_url
-import cloudinary # noqa
-import allauth # noqa
 
 if os.path.isfile("env.py"):
     import env # noqa
@@ -38,7 +36,6 @@ ALLOWED_HOSTS = [
     '.herokuapp.com',
 ]
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -48,8 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage',
     'django.contrib.staticfiles',
+    # Third party
+    'cloudinary_storage',
     'cloudinary',
     'django.contrib.sites',
     # Apps
@@ -187,6 +185,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# Whitenoise settings
 WHITENOISE_MANIFEST_STRICT = False
 
 # Media files (user-uploaded content)
@@ -201,8 +200,5 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
 }
-
-# WhiteNoise will still serve static files efficiently
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
