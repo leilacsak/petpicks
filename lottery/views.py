@@ -11,7 +11,7 @@ from .models import (
     Notification,
     Comment,
 )
-from .forms import EntryCreateForm, CommentForm
+from .forms import EntryCreateForm, CommentForm, LotteryRoundForm
 from django.contrib.admin.views.decorators import staff_member_required
 import random
 from django.utils import timezone
@@ -20,10 +20,24 @@ from django.http import HttpResponseForbidden, JsonResponse
 
 
 def round_list(request):
+    form = None
+    if request.user.is_staff:
+        if request.method == "POST":
+            form = LotteryRoundForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Lottery round created successfully!")
+                return redirect("round_list")
+        else:
+            form = LotteryRoundForm()
+    
     rounds = LotteryRound.objects.filter(
         status=LotteryRound.Status.ACTIVE).order_by("-start_date")
     
-    return render(request, "lottery/round_list.html", {"rounds": rounds})
+    return render(request, "lottery/round_list.html", {
+        "rounds": rounds,
+        "form": form,
+    })
 
 
 @login_required

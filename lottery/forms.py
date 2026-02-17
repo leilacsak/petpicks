@@ -4,7 +4,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from PIL import Image
 
-from .models import Comment, Entry
+from .models import Comment, Entry, LotteryRound
 
 
 ALLOWED_IMAGE_FORMATS = {"JPEG", "PNG", "WEBP"}
@@ -81,3 +81,24 @@ class CommentForm(forms.ModelForm):
         if not text:
             raise ValidationError("Comment cannot be empty.")
         return text
+
+
+class LotteryRoundForm(forms.ModelForm):
+    class Meta:
+        model = LotteryRound
+        fields = ["title", "start_date", "end_date"]
+        widgets = {
+            "title": forms.TextInput(attrs={"placeholder": "e.g., February 2026 Draw"}),
+            "start_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "end_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_date = cleaned_data.get("start_date")
+        end_date = cleaned_data.get("end_date")
+
+        if start_date and end_date and start_date >= end_date:
+            raise ValidationError("End date must be after start date.")
+        
+        return cleaned_data
