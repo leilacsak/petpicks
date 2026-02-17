@@ -96,8 +96,12 @@
     <!--Footer-->
     <footer class="py-3 border-top">
         <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
-            <p class="mb-2 mb-md-0">&copy; 2026 PetPicks. All rights reserved.</p>
-            <div class="footer-social d-flex gap-3">
+            <p class="mb-2 mb-md-0"><strong>&copy; 2026 PetPicks. All rights reserved.</strong></p>
+            <div class="footer-social d-flex gap-3 align-items-center">
+                <button type="button" class="text-decoration-none border-0 bg-transparent p-0 guidelines-btn"
+                    data-bs-toggle="modal" data-bs-target="#guidelinesModal">
+                    Guidelines
+                </button>
                 <a class="text-decoration-none" href="https://www.facebook.com" aria-label="PetPicks on Facebook">
                     <i class="fa-brands fa-facebook"></i>
                 </a>
@@ -110,6 +114,59 @@
             </div>
         </div>
     </footer>
+
+    <!-- Guidelines Modal -->
+    <div class="modal fade" id="guidelinesModal" tabindex="-1" aria-labelledby="guidelinesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="guidelinesModalLabel">PetPicks Guidelines</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>Welcome to PetPicks!</h6>
+                    <p>To ensure a fair and fun experience for everyone, please follow these guidelines when
+                        participating:</p>
+
+                    <h6 class="mt-4">Entry Requirements</h6>
+                    <ul>
+                        <li>Submit a clear, recent photo of your pet</li>
+                        <li>Provide accurate information about your pet (name, breed, age)</li>
+                        <li>Each pet can only be entered once per round</li>
+                        <li>Your pet must be a real, living animal</li>
+                    </ul>
+
+                    <h6 class="mt-4">Photo Guidelines</h6>
+                    <ul>
+                        <li>Photo must clearly show your pet</li>
+                        <li>No filters or heavy editing allowed</li>
+                        <li>Photos can be JPG, PNG, or WEBP format</li>
+                        <li>Maximum file size: 5 MB</li>
+                    </ul>
+
+                    <h6 class="mt-4">Community Standards</h6>
+                    <ul>
+                        <li>Be respectful and kind in comments</li>
+                        <li>No spam or promotional content</li>
+                        <li>Celebrate all pets equally</li>
+                        <li>Follow all applicable laws and regulations</li>
+                    </ul>
+
+                    <h6 class="mt-4">Rewards</h6>
+                    <p>At this stage, PetPicks does not offer monetary rewards. Winners receive digital badges and
+                        recognition in our community.</p>
+
+                    <h6 class="mt-4">Moderation</h6>
+                    <p>All entries are reviewed by our moderation team before being approved. Entries that violate these
+                        guidelines may be rejected.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Image Modal -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
