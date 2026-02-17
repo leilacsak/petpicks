@@ -1,12 +1,22 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
-from .models import LotteryRound, Pet, Entry, Badge, BadgeAward, Notification
-from .forms import EntryCreateForm
+from django.urls import reverse
+from .models import (
+    LotteryRound,
+    Pet,
+    Entry,
+    Badge,
+    BadgeAward,
+    Notification,
+    Comment,
+)
+from .forms import EntryCreateForm, CommentForm
 from django.contrib.admin.views.decorators import staff_member_required
 import random
 from django.utils import timezone
 from django.contrib import messages
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 
 
 def round_list(request):
@@ -36,12 +46,20 @@ def enter_round(request, round_id):
     if request.method == "POST":
         form = EntryCreateForm(request.POST, request.FILES)
         if form.is_valid():
-            pet = Pet.objects.create(
+            pet, created = Pet.objects.get_or_create(
                 owner=request.user,
                 name=form.cleaned_data["pet_name"],
-                breed=form.cleaned_data["pet_breed"],
-                age=form.cleaned_data["pet_age"],
+                defaults={
+                    "breed": form.cleaned_data["pet_breed"],
+                    "age": form.cleaned_data["pet_age"],
+                }
             )
+            
+            # Update breed and age if pet already exists
+            if not created:
+                pet.breed = form.cleaned_data["pet_breed"]
+                pet.age = form.cleaned_data["pet_age"]
+                pet.save(update_fields=["breed", "age"])
             
             Entry.objects.create(
                 round=round_obj,
@@ -151,9 +169,10 @@ def run_draw(request, round_id):
         }
     )
 
-    for entry in winners:
+    for index, entry in enumerate(winners, start=1):
         entry.is_winner = True
-        entry.save()
+        entry.winner_rank = index
+        entry.save(update_fields=["is_winner", "winner_rank"])
         
         BadgeAward.objects.get_or_create(
             user=entry.pet.owner,
@@ -199,8 +218,20 @@ def run_draw(request, round_id):
 def results(request):
     rounds = LotteryRound.objects.filter(
         status=LotteryRound.Status.COMPLETED
-    ).prefetch_related('entries').order_by("-drawn_at")
-    return render(request, "lottery/results_list.html", {"rounds": rounds})
+    ).prefetch_related(
+        Prefetch(
+            "entries",
+            queryset=Entry.objects.select_related("pet").order_by(
+                "winner_rank",
+                "id",
+            ),
+        ),
+    ).order_by("-drawn_at")
+    return render(
+        request,
+        "lottery/results_list.html",
+        {"rounds": rounds},
+    )
 
 
 @login_required
@@ -221,3 +252,121 @@ def entry_detail(request, entry_id):
         "lottery/entry_detail.html",
         {"entry": entry}
     )
+
+
+@login_required
+def comment_create(request, entry_id):
+    entry = get_object_or_404(
+        Entry.objects.select_related("round"),
+        id=entry_id,
+        is_winner=True,
+    )
+
+    if entry.round.status != LotteryRound.Status.COMPLETED:
+        return HttpResponseForbidden(
+            "Comments are only allowed on completed rounds."
+        )
+
+    if request.method != "POST":
+        return redirect("results_list")
+
+    form = CommentForm(request.POST)
+    is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
+    
+    if form.is_valid():
+        comment = Comment.objects.create(
+            entry=entry,
+            author=request.user,
+            text=form.cleaned_data["text"],
+        )
+        
+        if is_ajax:
+            return JsonResponse({
+                "success": True,
+                "comment": {
+                    "id": comment.id,
+                    "author": request.user.username,
+                    "text": comment.text,
+                    "created_at": comment.created_at.strftime("%b %d, %Y at %I:%M %p"),
+                    "edit_url": reverse("comment_edit", args=[comment.id]),
+                    "delete_url": reverse("comment_delete", args=[comment.id]),
+                }
+            })
+    
+    if is_ajax:
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors,
+        }, status=400)
+
+    next_url = request.POST.get("next") or "results_list"
+    return redirect(next_url)
+
+
+@login_required
+def comment_edit(request, comment_id):
+    comment = get_object_or_404(
+        Comment.objects.select_related("entry"),
+        id=comment_id,
+    )
+
+    if comment.author != request.user:
+        return HttpResponseForbidden(
+            "You do not have permission to edit this comment."
+        )
+
+    is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+    if request.method != "POST":
+        return redirect("results_list")
+
+    form = CommentForm(request.POST, instance=comment)
+    if form.is_valid():
+        form.save(update_fields=["text"])
+        
+        if is_ajax:
+            return JsonResponse({
+                "success": True,
+                "comment": {
+                    "id": comment.id,
+                    "text": comment.text,
+                }
+            })
+
+    if is_ajax:
+        return JsonResponse({
+            "success": False,
+            "errors": form.errors,
+        }, status=400)
+
+    next_url = request.POST.get("next") or "results_list"
+    return redirect(next_url)
+
+
+@login_required
+def comment_delete(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.author != request.user:
+        return HttpResponseForbidden(
+            "You do not have permission to delete this comment."
+        )
+
+    is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
+
+    if request.method == "POST":
+        comment.delete()
+        
+        if is_ajax:
+            return JsonResponse({
+                "success": True,
+            })
+
+    if is_ajax:
+        return JsonResponse({
+            "success": False,
+            "error": "Invalid request method",
+        }, status=400)
+
+    next_url = request.POST.get("next") or "results_list"
+    return redirect(next_url)

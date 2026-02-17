@@ -23,4 +23,19 @@ urlpatterns = [
     ),
     path("rounds/<int:round_id>/draw/", views.run_draw, name="run_draw"),
     path("results/", views.results, name="results_list"),
+    path(
+        "entries/<int:entry_id>/comments/",
+        views.comment_create,
+        name="comment_create",
+    ),
+    path(
+        "comments/<int:comment_id>/edit/",
+        views.comment_edit,
+        name="comment_edit",
+    ),
+    path(
+        "comments/<int:comment_id>/delete/",
+        views.comment_delete,
+        name="comment_delete",
+    ),
 ]

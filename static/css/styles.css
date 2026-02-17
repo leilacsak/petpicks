@@ -226,6 +226,30 @@ main {
   object-fit: cover;
 }
 
+/* Results winner tiles */
+.winner-card {
+  background-color: #fff;
+}
+
+.winner-photo-img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.winner-photo-placeholder {
+  width: 96px;
+  height: 96px;
+  border-radius: 12px;
+  background-color: #f1f3f5;
+  color: #6c757d;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+}
+
 /* Footer Styles */
 footer {
   background-color: var(--primary-color);
@@ -251,6 +275,24 @@ footer p {
 .footer-social a:hover {
   color: var(--text-color);
   transform: translateY(-1px);
+}
+
+/* Comment list styles */
+.comment-list .list-group-item {
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background-color: transparent;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.comment-list .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Hide asterisk on required form fields */
+.form-label .asteriskField {
+  display: none;
 }
 
 /* Responsive adjustments */

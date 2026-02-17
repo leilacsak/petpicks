@@ -59,6 +59,7 @@ class Entry(models.Model):
         default=Status.PENDING,
     )
     is_winner = models.BooleanField(default=False)
+    winner_rank = models.PositiveSmallIntegerField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -135,4 +136,25 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"To {self.user} @ {self.created_at:%Y-%m-%d %H:%M}"
+
+
+class Comment(models.Model):
+    entry = models.ForeignKey(
+        Entry,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Comment by {self.author} on {self.entry}"
 

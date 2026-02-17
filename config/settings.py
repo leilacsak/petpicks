@@ -50,6 +50,8 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'django.contrib.sites',
+    'crispy_forms',
+    'crispy_bootstrap5',
     # Apps
     'core',
     'lottery',
@@ -58,6 +60,9 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 # Required for django-allauth
 SITE_ID = 1
 

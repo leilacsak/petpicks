@@ -7,30 +7,40 @@
     <div class="row">
         {% for round in rounds %}
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-body">
                     <h5 class="card-title">{{ round.title }}</h5>
                     <p class="card-text">
                         <strong>Drawn:</strong> {{ round.drawn_at|date:"Y-m-d H:i" }}
                     </p>
-                    
+
                     <h6 class="mt-3">Winners:</h6>
-                    {% with winners=round.entries.all|dictsort:"is_winner" %}
-                        {% if winners %}
-                            <ul class="list-unstyled">
-                                {% for entry in round.entries.all %}
-                                    {% if entry.is_winner %}
-                                    <li class="mb-2">
-                                        <span class="badge bg-success me-2">🏆 Winner</span>
-                                        <strong>{{ entry.pet.name }}</strong> ({{ entry.pet.breed }})
-                                    </li>
+                    <div class="row g-3">
+                        {% for entry in round.entries.all %}
+                        {% if entry.is_winner %}
+                        <div class="col-12 col-lg-4">
+                            <div class="winner-card border rounded h-100 p-3 text-center">
+                                {% if entry.photo %}
+                                <img src="{{ entry.photo.url }}" class="winner-image winner-photo-img mb-2"
+                                    style="cursor: pointer;" data-full-image="{{ entry.photo.url }}"
+                                    alt="{{ entry.pet.name }} winning pet photo">
+                                {% else %}
+                                <div class="winner-photo-placeholder mb-2">No photo</div>
+                                {% endif %}
+                                <div class="d-flex justify-content-center align-items-center flex-wrap gap-2">
+                                    <h5 class="mb-0">{{ entry.pet.name }}</h5>
+                                    {% if entry.winner_rank %}
+                                    <span class="badge bg-secondary">
+                                        {% if entry.winner_rank == 1 %}1st{% elif entry.winner_rank == 2 %}2nd{% else%}3rd{% endif %}
+                                    </span>
                                     {% endif %}
-                                {% endfor %}
-                            </ul>
-                        {% else %}
-                        <p class="text-muted">No winners yet.</p>
+                                </div>
+                                <p class="small text-muted mb-0">{{ entry.pet.breed }}</p>
+                            </div>
+                        </div>
                         {% endif %}
-                    {% endwith %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
