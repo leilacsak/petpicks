@@ -45,10 +45,10 @@
                                 <div class="d-flex gap-2 align-items-center">
                                     <small class="text-muted">{{ comment.created_at|date:"Y-m-d H:i" }}</small>
                                     {% if comment.author == user %}
-                                    <button type="button" class="btn btn-sm btn-link edit-comment-btn"
+                                    <button type="button" class="btn btn-sm btn-outline-secondary edit-comment-btn"
                                         data-comment-id="{{ comment.id }}"
                                         data-edit-url="{% url 'comment_edit' comment.id %}">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-link text-danger delete-comment-btn"
+                                    <button type="button" class="btn btn-sm btn-outline-danger delete-comment-btn"
                                         data-comment-id="{{ comment.id }}"
                                         data-delete-url="{% url 'comment_delete' comment.id %}">Delete</button>
                                     {% endif %}

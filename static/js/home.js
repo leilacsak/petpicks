@@ -30,10 +30,10 @@ document.querySelectorAll('.comment-form').forEach(function (form) {
                                 <strong>${data.comment.author}</strong>
                                 <div class="d-flex gap-2 align-items-center">
                                     <small class="text-muted">${data.comment.created_at}</small>
-                                    <button type="button" class="btn btn-sm btn-link edit-comment-btn" 
+                                    <button type="button" class="btn btn-sm btn-outline-secondary edit-comment-btn" 
                                         data-comment-id="${data.comment.id}" 
                                         data-edit-url="${data.comment.edit_url}">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-link text-danger delete-comment-btn" 
+                                    <button type="button" class="btn btn-sm btn-outline-danger delete-comment-btn" 
                                         data-comment-id="${data.comment.id}" 
                                         data-delete-url="${data.comment.delete_url}">Delete</button>
                                 </div>
