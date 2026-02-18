@@ -245,6 +245,34 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* About page */
+.about-page .about-title {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.about-page .lead {
+  color: color-mix(in srgb, var(--text-color) 85%, white);
+}
+
+.about-page .about-steps-card {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--primary-color) 12%, white) 0%,
+    #fff 75%
+  );
+  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, white);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--primary-color) 18%, white);
+}
+
+.about-page .about-steps-list li {
+  color: var(--text-color);
+}
+
+.about-page .about-steps-list .badge.bg-secondary {
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--secondary-color) 35%, white);
+}
+
 /* Active rounds cards */
 .active-round-card {
   border: 1px solid color-mix(in srgb, var(--primary-color) 35%, white);
