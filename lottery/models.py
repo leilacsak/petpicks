@@ -72,6 +72,19 @@ class Entry(models.Model):
 
     def __str__(self):
         return f"{self.pet.name} - {self.round.title}"
+    
+    def get_rank_display(self):
+        """Return ordinal rank (1st, 2nd, 3rd)"""
+        if not self.winner_rank:
+            return ""
+        if self.winner_rank == 1:
+            return "1st"
+        elif self.winner_rank == 2:
+            return "2nd"
+        elif self.winner_rank == 3:
+            return "3rd"
+        else:
+            return f"{self.winner_rank}th"
 
 
 class Badge(models.Model):
