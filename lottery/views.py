@@ -20,6 +20,16 @@ from django.http import HttpResponseForbidden, JsonResponse
 
 
 def round_list(request):
+    """
+    Display list of active lottery rounds and optionally create new round.
+
+    GET: Shows all active rounds
+    POST: Creates new lottery round (staff members only )
+
+    Context:
+    rounds: QuerySet of active LotteryRound objects ordered by start date
+    form: LotteryRoundForm for creating rounds (None if not staff)
+    """
     form = None
     if request.user.is_staff:
         if request.method == "POST":
@@ -44,6 +54,19 @@ def round_list(request):
 
 @login_required
 def enter_round(request, round_id):
+    """
+    Submit a pet entry to an active lottery round.
+
+    Users can only submit one entry per round. Creates or updates Pet record
+    and creates Entry with photo. Form collects pet name, breed, age.
+
+    Args:
+    round_id: Primary key of the LotteryRound to enter
+
+    Context:
+        form: EntryCreateForm for pet submission
+        round: LotteryRound object
+    """
     round_obj = get_object_or_404(
         LotteryRound,
         id=round_id,
@@ -97,6 +120,18 @@ def enter_round(request, round_id):
 
 @login_required
 def profile(request):
+    """
+    Display user's profile with entry history, earned badges, and
+    notifications.
+
+    Shows paginated list of user's lottery entries, badges earned by round,
+    and recent notifications.
+
+    Context:
+        entries: User's submitted entries with related pet and round data
+        badges: User's earned badges grouped/sorted by round
+        notifications: User's recent notifications ordered by date
+    """
     entries = (
         Entry.objects.filter(pet__owner=request.user)
         .select_related("pet", "round")
@@ -127,6 +162,15 @@ def profile(request):
 
 @staff_member_required
 def moderation_queue(request):
+    """
+    Display pending entries awaiting staff approval/rejection.
+
+    Staff-only view for content moderation. Shows entries awaiting review
+    with pet and round information.
+
+    Context:
+        entries: QuerySet of pending Entry objects (status=PENDING)
+    """
     pending_entries = Entry.objects.filter(
         status=Entry.Status.PENDING
     ).select_related("pet", "round")
@@ -139,6 +183,15 @@ def moderation_queue(request):
 
 @staff_member_required
 def approve_entry(request, entry_id):
+    """
+    Approve a pending entry for inclusion in the lottery draw.
+
+    Staff-only. Changes entry status from PENDING to APPROVED.
+    Redirects back to moderation queue after approval.
+
+    Args:
+        entry_id: Primary key of the Entry to approve
+    """
     entry = get_object_or_404(Entry, id=entry_id)
     entry.status = Entry.Status.APPROVED
     entry.save()
@@ -147,6 +200,15 @@ def approve_entry(request, entry_id):
 
 @staff_member_required
 def reject_entry(request, entry_id):
+    """
+    Reject a pending entry, excluding it from the lottery draw.
+
+    Staff-only. Changes entry status from PENDING to REJECTED.
+    Redirects back to moderation queue after rejection.
+
+    Args:
+        entry_id: Primary key of the Entry to reject
+    """
     entry = get_object_or_404(Entry, id=entry_id)
     entry.status = Entry.Status.REJECTED
     entry.save()
@@ -155,6 +217,16 @@ def reject_entry(request, entry_id):
 
 @staff_member_required
 def run_draw(request, round_id):
+    """
+    Execute the lottery draw for a completed round.
+
+    Selects up to 3 random winners from approved entries, creates notifications
+    for winners and other participants, awards "Winner" badges, marks round
+    as completed. Only runs once per round.
+
+    Args:
+        round_id: Primary key of the LotteryRound to draw
+    """
     round_obj = get_object_or_404(LotteryRound, id=round_id)
 
     # Lock: cannot draw twice
@@ -232,6 +304,16 @@ def run_draw(request, round_id):
 
 
 def results(request):
+    """
+    Display completed lottery rounds with winner rankings.
+
+    Shows all finished rounds with entries sorted
+    by winner rank (1st, 2nd, 3rd).
+    Winning entries display comment section if user is authenticated.
+
+    Context:
+        rounds: QuerySet of completed LotteryRound objects with related entries
+    """
     rounds = LotteryRound.objects.filter(
         status=LotteryRound.Status.COMPLETED
     ).prefetch_related(
@@ -252,6 +334,19 @@ def results(request):
 
 @login_required
 def entry_detail(request, entry_id):
+    """
+    Display detailed information about a specific pet entry.
+
+    Shows pet photo, information, entry status,
+    and winner rank (if applicable).
+    Access restricted to the entry owner (pet owner).
+
+    Args:
+        entry_id: Primary key of the Entry to display
+
+    Context:
+        entry: Entry object with related Pet and LotteryRound data
+    """
     entry = get_object_or_404(
         Entry.objects.select_related("pet", "round"),
         id=entry_id
@@ -272,6 +367,21 @@ def entry_detail(request, entry_id):
 
 @login_required
 def comment_create(request, entry_id):
+    """
+    Create a comment on a winning entry (supports AJAX and traditional POST).
+
+    Only allows comments on entries in completed rounds. POST request creates
+    and saves comment.
+
+    Returns (AJAX):
+        - success: bool
+        - comment: {id, author, text, created_at, edit_url,
+          delete_url} on success
+        - errors: form validation errors on failure
+
+    Args:
+       entry_id: Primary key of the winning Entry to comment on
+    """
     entry = get_object_or_404(
         Entry.objects.select_related("round"),
         id=entry_id,
@@ -324,6 +434,19 @@ def comment_create(request, entry_id):
 
 @login_required
 def comment_edit(request, comment_id):
+    """
+    Update a comment's text (supports AJAX and traditional POST).
+
+    Author-only access. POST request saves updated comment text.
+
+    Returns (AJAX):
+        - success: bool
+        - comment: {id, text} on success
+        - errors: form validation errors on failure
+
+    Args:
+        comment_id: Primary key of the Comment to edit
+    """
     comment = get_object_or_404(
         Comment.objects.select_related("entry"),
         id=comment_id,
@@ -364,6 +487,18 @@ def comment_edit(request, comment_id):
 
 @login_required
 def comment_delete(request, comment_id):
+    """
+    Delete a comment (supports AJAX and traditional POST).
+
+    Author-only access. POST request deletes the comment.
+
+    Returns (AJAX):
+        - success: bool
+        - error: error message on failure
+
+    Args:
+        comment_id: Primary key of the Comment to delete
+    """
     comment = get_object_or_404(Comment, id=comment_id)
 
     if comment.author != request.user:
