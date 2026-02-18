@@ -26,6 +26,10 @@ body {
   flex-direction: column;
 }
 
+h1 {
+  color: var(--primary-color);
+}
+
 /* Main content wrapper */
 main {
   width: 100%;
