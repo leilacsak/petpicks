@@ -39,7 +39,6 @@ document.querySelectorAll('.comment-form').forEach(function (form) {
         e.preventDefault();
 
         const formData = new FormData(form);
-        const entryId = form.getAttribute('data-entry-id');
         const commentListContainer = form.closest('.card-body').querySelector('.comment-list');
         const textInput = form.querySelector('textarea');
 
@@ -210,7 +209,6 @@ document.addEventListener('click', function (e) {
         }
 
         const deleteBtn = e.target;
-        const commentId = deleteBtn.getAttribute('data-comment-id');
         const deleteUrl = deleteBtn.getAttribute('data-delete-url');
         const commentItem = deleteBtn.closest('.list-group-item');
 
