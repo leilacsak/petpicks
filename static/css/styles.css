@@ -245,6 +245,25 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Active rounds cards */
+.active-round-card {
+  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, white);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--primary-color) 10%, white) 0%,
+    #fff 75%
+  );
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 18%, white);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.active-round-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 16px color-mix(in srgb, var(--secondary-color) 30%, white);
+}
+
 /* Recent winner cards */
 .recent-winner-card {
   border: 1px solid color-mix(in srgb, var(--primary-color) 45%, white);
