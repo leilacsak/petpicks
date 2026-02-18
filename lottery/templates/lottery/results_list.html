@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container py-4">
-    <h1>Results</h1>
+    <h1 class="mb-4">Results</h1>
 
     {% if rounds %}
     <div class="row">
@@ -31,7 +31,8 @@
                                     <h5 class="mb-0">{{ entry.pet.name }}</h5>
                                     {% if entry.winner_rank %}
                                     <span class="badge bg-secondary">
-                                        {% if entry.winner_rank == 1 %}1st{% elif entry.winner_rank == 2 %}2nd{% else%}3rd{% endif %}
+                                        {% if entry.winner_rank == 1 %}1st{% elif entry.winner_rank == 2 %}2nd{%
+                                        else%}3rd{% endif %}
                                     </span>
                                     {% endif %}
                                 </div>
