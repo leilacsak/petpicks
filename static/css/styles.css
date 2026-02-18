@@ -464,6 +464,27 @@ footer p {
   color: color-mix(in srgb, var(--text-color) 70%, white);
 }
 
+/* Global notifications (Django messages) */
+.site-notifications {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.site-notifications .notification-item {
+  background-color: #d9f3e6 !important;
+  border: 1px solid #b7e3d0 !important;
+  color: #1f5137 !important;
+  border-radius: 12px;
+  margin-bottom: 0;
+  box-shadow: 0 6px 12px rgba(31, 81, 55, 0.12);
+}
+
+.site-notifications .notification-item .btn-close {
+  filter: none;
+  opacity: 0.7;
+}
+
 /* Hide asterisk on required form fields */
 .form-label .asteriskField {
   display: none;
