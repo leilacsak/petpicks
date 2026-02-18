@@ -72,7 +72,7 @@ class Entry(models.Model):
 
     def __str__(self):
         return f"{self.pet.name} - {self.round.title}"
-    
+
     def get_rank_display(self):
         """Return ordinal rank (1st, 2nd, 3rd)"""
         if not self.winner_rank:
@@ -170,4 +170,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author} on {self.entry}"
-

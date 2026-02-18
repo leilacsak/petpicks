@@ -17,7 +17,7 @@ def home(request):
         .order_by("-drawn_at")
         .first()
     )
-    
+
     recent_winners = []
     if latest_round:
         recent_winners = (
@@ -37,9 +37,9 @@ def home(request):
             comments = list(entry.comments.all())
             paginator = Paginator(comments, COMMENTS_PER_PAGE)
             entry.comment_page = paginator.get_page(page_number)
-    
+
     return render(
-        request, 
+        request,
         "core/home.html",
         {
             "latest_round": latest_round,

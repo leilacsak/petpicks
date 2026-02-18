@@ -26,14 +26,16 @@ def round_list(request):
             form = LotteryRoundForm(request.POST)
             if form.is_valid():
                 form.save()
-                messages.success(request, "Lottery round created successfully!")
+                messages.success(
+                    request, "Lottery round created successfully!"
+                )
                 return redirect("round_list")
         else:
             form = LotteryRoundForm()
-    
+
     rounds = LotteryRound.objects.filter(
         status=LotteryRound.Status.ACTIVE).order_by("-start_date")
-    
+
     return render(request, "lottery/round_list.html", {
         "rounds": rounds,
         "form": form,
@@ -47,7 +49,7 @@ def enter_round(request, round_id):
         id=round_id,
         status=LotteryRound.Status.ACTIVE
     )
-    
+
     # Check if user has already submitted to this round
     if Entry.objects.filter(pet__owner=request.user, round=round_obj).exists():
         messages.error(
@@ -56,7 +58,7 @@ def enter_round(request, round_id):
             "Only one entry per round is allowed."
         )
         return redirect("round_list")
-    
+
     if request.method == "POST":
         form = EntryCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -68,13 +70,13 @@ def enter_round(request, round_id):
                     "age": form.cleaned_data["pet_age"],
                 }
             )
-            
+
             # Update breed and age if pet already exists
             if not created:
                 pet.breed = form.cleaned_data["pet_breed"]
                 pet.age = form.cleaned_data["pet_age"]
                 pet.save(update_fields=["breed", "age"])
-            
+
             Entry.objects.create(
                 round=round_obj,
                 pet=pet,
@@ -82,10 +84,10 @@ def enter_round(request, round_id):
             )
             messages.success(request, "Entry submitted successfully!")
             return redirect("profile")
-    
+
     else:
         form = EntryCreateForm()
-    
+
     return render(
         request,
         "lottery/enter_round.html",
@@ -121,7 +123,7 @@ def profile(request):
             "notifications": notifications,
         },
     )
-    
+
 
 @staff_member_required
 def moderation_queue(request):
@@ -175,7 +177,7 @@ def run_draw(request, round_id):
 
     winner_count = 3 if len(eligible) >= 3 else len(eligible)
     winners = random.sample(eligible, winner_count)
-    
+
     winner_badge, _ = Badge.objects.get_or_create(
         name="Winner",
         defaults={
@@ -187,7 +189,7 @@ def run_draw(request, round_id):
         entry.is_winner = True
         entry.winner_rank = index
         entry.save(update_fields=["is_winner", "winner_rank"])
-        
+
         BadgeAward.objects.get_or_create(
             user=entry.pet.owner,
             badge=winner_badge,
@@ -286,27 +288,30 @@ def comment_create(request, entry_id):
 
     form = CommentForm(request.POST)
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
-    
+
     if form.is_valid():
         comment = Comment.objects.create(
             entry=entry,
             author=request.user,
             text=form.cleaned_data["text"],
         )
-        
+
         if is_ajax:
+            created_at_str = comment.created_at.strftime(
+                "%b %d, %Y at %I:%M %p"
+            )
             return JsonResponse({
                 "success": True,
                 "comment": {
                     "id": comment.id,
                     "author": request.user.username,
                     "text": comment.text,
-                    "created_at": comment.created_at.strftime("%b %d, %Y at %I:%M %p"),
+                    "created_at": created_at_str,
                     "edit_url": reverse("comment_edit", args=[comment.id]),
                     "delete_url": reverse("comment_delete", args=[comment.id]),
                 }
             })
-    
+
     if is_ajax:
         return JsonResponse({
             "success": False,
@@ -337,7 +342,7 @@ def comment_edit(request, comment_id):
     form = CommentForm(request.POST, instance=comment)
     if form.is_valid():
         updated_comment = form.save()
-        
+
         if is_ajax:
             return JsonResponse({
                 "success": True,
@@ -370,7 +375,7 @@ def comment_delete(request, comment_id):
 
     if request.method == "POST":
         comment.delete()
-        
+
         if is_ajax:
             return JsonResponse({
                 "success": True,

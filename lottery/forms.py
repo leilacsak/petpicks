@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, HTML, Div
 from django import forms
 from django.core.exceptions import ValidationError
 from PIL import Image
@@ -21,7 +20,7 @@ class EntryCreateForm(forms.ModelForm):
         ('month(s)', 'month(s)'),
         ('week(s)', 'week(s)'),
     ]
-    
+
     pet_name = forms.CharField(max_length=50, label="Pet name", required=True)
     pet_breed = forms.CharField(max_length=50, required=True, label="Breed")
     pet_age_number = forms.ChoiceField(
@@ -38,7 +37,7 @@ class EntryCreateForm(forms.ModelForm):
     class Meta:
         model = Entry
         fields = ["photo"]
-    
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -56,11 +55,11 @@ class EntryCreateForm(forms.ModelForm):
         cleaned_data = super().clean()
         age_number = cleaned_data.get("pet_age_number")
         age_unit = cleaned_data.get("pet_age_unit")
-        
+
         if age_number and age_unit:
             # Combine into a single age string like "2 year(s)"
             cleaned_data["pet_age"] = f"{age_number} {age_unit}"
-        
+
         return cleaned_data
 
     def clean_photo(self):
@@ -142,5 +141,5 @@ class LotteryRoundForm(forms.ModelForm):
 
         if start_date and end_date and start_date >= end_date:
             raise ValidationError("End date must be after start date.")
-        
+
         return cleaned_data
