@@ -13,7 +13,11 @@
             <li class="mb-2 fs-6">Win badges.</li>
             <li class="mb-2 fs-6">Have fun.</li>
         </ul>
+        {% if user.is_authenticated %}
+        <a href="{% url 'round_list' %}" class="btn btn-primary" id="joinNowBtn">View Active Rounds</a>
+        {% else %}
         <a href="{% url 'account_signup' %}" class="btn btn-primary">Join Now</a>
+        {% endif %}
     </div>
 </section>
 

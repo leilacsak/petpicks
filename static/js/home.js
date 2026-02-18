@@ -1,3 +1,38 @@
+// Handle "Join Now" button for authenticated users
+const joinNowBtn = document.getElementById('joinNowBtn');
+if (joinNowBtn) {
+    joinNowBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Show notification message
+        const notification = document.createElement('div');
+        notification.className = 'alert alert-info alert-dismissible fade show notification-item';
+        notification.setAttribute('role', 'alert');
+        notification.style.minWidth = '300px';
+        notification.innerHTML = `
+            You are logged in. We are redirecting you to the Active Rounds page to play.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        // Create or get notification container
+        let notificationContainer = document.querySelector('.site-notifications');
+        if (!notificationContainer) {
+            notificationContainer = document.createElement('div');
+            notificationContainer.className = 'position-fixed top-0 start-0 p-3 site-notifications';
+            notificationContainer.style.zIndex = '1040';
+            notificationContainer.style.marginTop = '70px';
+            document.body.appendChild(notificationContainer);
+        }
+        
+        notificationContainer.appendChild(notification);
+        
+        // Redirect after a short delay
+        setTimeout(() => {
+            window.location.href = joinNowBtn.getAttribute('href');
+        }, 3000);
+    });
+}
+
 // AJAX comment submission
 document.querySelectorAll('.comment-form').forEach(function (form) {
     form.addEventListener('submit', function (e) {
