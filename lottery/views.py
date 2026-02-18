@@ -333,39 +333,6 @@ def results(request):
 
 
 @login_required
-def entry_detail(request, entry_id):
-    """
-    Display detailed information about a specific pet entry.
-
-    Shows pet photo, information, entry status,
-    and winner rank (if applicable).
-    Access restricted to the entry owner (pet owner).
-
-    Args:
-        entry_id: Primary key of the Entry to display
-
-    Context:
-        entry: Entry object with related Pet and LotteryRound data
-    """
-    entry = get_object_or_404(
-        Entry.objects.select_related("pet", "round"),
-        id=entry_id
-    )
-
-    # Access control
-    if entry.pet.owner != request.user:
-        return HttpResponseForbidden(
-            "You do not have permission to view this entry."
-        )
-
-    return render(
-        request,
-        "lottery/entry_detail.html",
-        {"entry": entry}
-    )
-
-
-@login_required
 def comment_create(request, entry_id):
     """
     Create a comment on a winning entry (supports AJAX and traditional POST).
