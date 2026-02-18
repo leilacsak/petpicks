@@ -2,9 +2,9 @@
 
 {% block content %}
 <div class="container py-4">
-    <h1 class="mb-4">My Profile</h1>
+    <h1 class="mb-4 text-center">My Profile</h1>
 
-    <h2 class="mb-4">Notifications</h2>
+    <h2 class=" mt-5 mb-4">Notifications</h2>
     {% if notifications %}
     <ul class="list-group mb-4 profile-notifications">
         {% for n in notifications %}
@@ -18,7 +18,7 @@
     <p>No notifications yet.</p>
     {% endif %}
 
-    <h2 class="mb-4">Earned Badges</h2>
+    <h2 class=" mt-5 mb-4">Earned Badges</h2>
     {% if badges %}
     <div class="badge-grid mb-4">
         {% for badge in badges %}
@@ -38,7 +38,7 @@
     <p>You have no earned badges yet.</p>
     {% endif %}
 
-    <h2 class="mb-4">My Entries</h2>
+    <h2 class=" mt-5 mb-4">My Entries</h2>
     <div>
         {% if entries %}
         <div class="row">
