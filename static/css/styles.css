@@ -8,6 +8,18 @@
   --drawcard-color: #00f7fffb;
   --text-color: #333;
   --font-family: "Nunito", sans-serif;
+
+  /* Color Mix Variants */
+  --primary-light: color-mix(in srgb, var(--primary-color) 12%, white);
+  --primary-medium: color-mix(in srgb, var(--primary-color) 35%, white);
+  --primary-dark: color-mix(in srgb, var(--primary-color) 50%, white);
+
+  --secondary-light: color-mix(in srgb, var(--secondary-color) 30%, white);
+  --secondary-medium: color-mix(in srgb, var(--secondary-color) 35%, white);
+  --secondary-dark: color-mix(in srgb, var(--secondary-color) 50%, white);
+
+  --text-muted: color-mix(in srgb, var(--text-color) 70%, white);
+  --text-light: color-mix(in srgb, var(--text-color) 85%, white);
 }
 
 /* Global Styles - Scrollable page */
@@ -75,10 +87,10 @@ main {
 
 .badge-card {
   background: #fff;
-  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, white);
+  border: 1px solid var(--primary-medium);
   border-radius: 12px;
   padding: 1rem 1rem;
-  box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 20%, white);
+  box-shadow: 0 6px 12px var(--primary-light);
   position: relative;
   overflow: hidden;
   transition:
@@ -96,13 +108,13 @@ main {
   background: linear-gradient(
     90deg,
     var(--secondary-color),
-    color-mix(in srgb, var(--secondary-color) 60%, white)
+    var(--secondary-dark)
   );
 }
 
 .badge-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 16px color-mix(in srgb, var(--secondary-color) 35%, white);
+  box-shadow: 0 10px 16px var(--secondary-medium);
 }
 
 .badge-card-header {
@@ -261,11 +273,7 @@ main {
 
 /* Create draw card */
 .create-draw-card {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--primary-color) 12%, white) 0%,
-    #fff 75%
-  );
+  background: linear-gradient(180deg, var(--primary-light) 0%, #fff 75%);
   border-radius: 12px;
 }
 
@@ -283,17 +291,13 @@ main {
 }
 
 .about-page .lead {
-  color: color-mix(in srgb, var(--text-color) 85%, white);
+  color: var(--text-light);
 }
 
 .about-page .about-steps-card {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--primary-color) 12%, white) 0%,
-    #fff 75%
-  );
-  border: 1px solid color-mix(in srgb, var(--primary-color) 25%, white);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--primary-color) 18%, white);
+  background: linear-gradient(180deg, var(--primary-light) 0%, #fff 75%);
+  border: 1px solid var(--primary-medium);
+  box-shadow: 0 8px 16px var(--primary-light);
 }
 
 .about-page .about-steps-list li {
@@ -301,18 +305,14 @@ main {
 }
 
 .about-page .about-steps-list .badge.bg-secondary {
-  box-shadow: 0 4px 8px color-mix(in srgb, var(--secondary-color) 35%, white);
+  box-shadow: 0 4px 8px var(--secondary-medium);
 }
 
 /* Active rounds cards */
 .active-round-card {
-  border: 1px solid color-mix(in srgb, var(--primary-color) 35%, white);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--primary-color) 10%, white) 0%,
-    #fff 75%
-  );
-  box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 18%, white);
+  border: 1px solid var(--primary-medium);
+  background: linear-gradient(180deg, var(--primary-light) 0%, #fff 75%);
+  box-shadow: 0 6px 12px var(--primary-light);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -320,14 +320,14 @@ main {
 
 .active-round-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 16px color-mix(in srgb, var(--secondary-color) 30%, white);
+  box-shadow: 0 10px 16px var(--secondary-light);
 }
 
 /* Recent winner cards */
 .recent-winner-card {
-  border: 1px solid color-mix(in srgb, var(--primary-color) 45%, white);
+  border: 1px solid var(--primary-dark);
   background-color: #fff;
-  box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 25%, white);
+  box-shadow: 0 6px 12px var(--primary-medium);
   border-radius: 10px;
   overflow: hidden;
   transition:
@@ -337,7 +337,7 @@ main {
 
 .recent-winner-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 18px color-mix(in srgb, var(--secondary-color) 45%, white);
+  box-shadow: 0 10px 18px var(--secondary-dark);
 }
 
 .recent-winner-card .card-title {
@@ -347,11 +347,7 @@ main {
 }
 
 .recent-winner-card .card-body {
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--primary-color) 12%, white) 0%,
-    #fff 70%
-  );
+  background: linear-gradient(180deg, var(--primary-light) 0%, #fff 70%);
 }
 
 .recent-winner-card .card-img-top {
@@ -446,13 +442,13 @@ footer p {
 .profile-notifications {
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 18%, white);
+  box-shadow: 0 6px 12px var(--primary-light);
 }
 
 .profile-notification-item {
   border: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 28%, white);
-  background-color: color-mix(in srgb, var(--primary-color) 8%, white);
+  border-bottom: 1px solid var(--primary-medium);
+  background-color: var(--primary-light);
   padding: 0.85rem 1rem;
 }
 
@@ -461,7 +457,7 @@ footer p {
 }
 
 .profile-notification-date {
-  color: color-mix(in srgb, var(--text-color) 70%, white);
+  color: var(--text-muted);
 }
 
 /* Global notifications (Django messages) */
