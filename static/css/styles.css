@@ -232,7 +232,7 @@ main {
 }
 
 /* Recent winner cards */
-.recent-winners .recent-winner-card {
+.recent-winner-card {
   border: 1px solid color-mix(in srgb, var(--primary-color) 45%, white);
   background-color: #fff;
   box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 25%, white);
@@ -243,18 +243,18 @@ main {
     box-shadow 0.2s ease;
 }
 
-.recent-winners .recent-winner-card:hover {
+.recent-winner-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 18px color-mix(in srgb, var(--secondary-color) 45%, white);
 }
 
-.recent-winners .recent-winner-card .card-title {
+.recent-winner-card .card-title {
   color: var(--primary-color);
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
 
-.recent-winners .recent-winner-card .card-body {
+.recent-winner-card .card-body {
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--primary-color) 12%, white) 0%,
@@ -271,7 +271,7 @@ main {
 
 /* Results winner tiles */
 .winner-card {
-  background-color: #fff;
+  background-color: color-mix(in srgb, var(--primary-color) 18%, transparent);
 }
 
 .winner-photo-img {
