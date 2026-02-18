@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
 
-/* Custom CSS Variables */
+/* ========================================
+   VARIABLES & CONFIGURATION
+   ======================================== */
+
 :root {
   --primary-color: #86afc6;
   --secondary-color: #c9a477;
@@ -9,7 +12,6 @@
   --text-color: #333;
   --font-family: "Nunito", sans-serif;
 
-  /* Color Mix Variants */
   --primary-light: color-mix(in srgb, var(--primary-color) 12%, white);
   --primary-medium: color-mix(in srgb, var(--primary-color) 35%, white);
   --primary-dark: color-mix(in srgb, var(--primary-color) 50%, white);
@@ -22,7 +24,10 @@
   --text-light: color-mix(in srgb, var(--text-color) 85%, white);
 }
 
-/* Global Styles - Scrollable page */
+/* ========================================
+   GLOBAL STYLES
+   ======================================== */
+
 html {
   scroll-behavior: smooth;
 }
@@ -42,14 +47,16 @@ h1 {
   color: var(--primary-color);
 }
 
-/* Main content wrapper */
 main {
   width: 100%;
   display: block;
   flex: 1 0 auto;
 }
 
-/*Button Styles*/
+/* ========================================
+   BUTTON & FORM UTILITIES
+   ======================================== */
+
 .btn-primary {
   background-color: var(--primary-color);
   border: none;
@@ -62,19 +69,26 @@ main {
   background-color: var(--secondary-color);
 }
 
-/* Guidelines Button */
 .guidelines-btn {
   color: white;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 700;
+  transition: color 0.3s ease;
 }
 
 .guidelines-btn:hover {
   color: var(--text-color);
 }
 
-/* Badge Styles */
+.form-label .asteriskField {
+  display: none;
+}
+
+/* ========================================
+   BADGE COMPONENT
+   ======================================== */
+
 .badge.bg-secondary {
   background-color: var(--secondary-color) !important;
 }
@@ -89,7 +103,7 @@ main {
   background: #fff;
   border: 1px solid var(--primary-medium);
   border-radius: 12px;
-  padding: 1rem 1rem;
+  padding: 1rem;
   box-shadow: 0 6px 12px var(--primary-light);
   position: relative;
   overflow: hidden;
@@ -170,7 +184,10 @@ main {
   }
 }
 
-/* Navbar Styles */
+/* ========================================
+   NAVIGATION & LAYOUT
+   ======================================== */
+
 .navbar {
   background-color: var(--primary-color) !important;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -208,7 +225,10 @@ main {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 
-/*Hero Section Styles*/
+/* ========================================
+   HERO SECTION
+   ======================================== */
+
 .hero {
   background-image: url("../images/hero_image.png");
   background-size: cover;
@@ -254,14 +274,24 @@ main {
   margin-bottom: 0.5rem !important;
 }
 
-/* Card Styles */
+/* ========================================
+   CARD COMPONENTS
+   ======================================== */
+
 .card {
   border: none;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Moderation queue cards */
+.card-img-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* Moderation Cards */
 .moderation-card {
   border: 1px solid rgba(134, 175, 198, 0.35);
 }
@@ -271,7 +301,7 @@ main {
   object-fit: cover;
 }
 
-/* Create draw card */
+/* Create Draw Card */
 .create-draw-card {
   background: linear-gradient(180deg, var(--primary-light) 0%, #fff 75%);
   border-radius: 12px;
@@ -284,7 +314,7 @@ main {
   border-top-right-radius: 12px;
 }
 
-/* About page */
+/* About Page Cards */
 .about-page .about-title {
   color: var(--primary-color);
   font-weight: 700;
@@ -308,7 +338,7 @@ main {
   box-shadow: 0 4px 8px var(--secondary-medium);
 }
 
-/* Active rounds cards */
+/* Active Rounds Cards */
 .active-round-card {
   border: 1px solid var(--primary-medium);
   background: linear-gradient(180deg, var(--primary-light) 0%, #fff 75%);
@@ -323,7 +353,7 @@ main {
   box-shadow: 0 10px 16px var(--secondary-light);
 }
 
-/* Recent winner cards */
+/* Recent Winner Cards */
 .recent-winner-card {
   border: 1px solid var(--primary-dark);
   background-color: #fff;
@@ -355,13 +385,6 @@ main {
   border-top-right-radius: 10px;
 }
 
-.card-img-top {
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  height: 200px;
-  object-fit: cover;
-}
-
 .winner-image {
   cursor: pointer;
 }
@@ -374,7 +397,7 @@ main {
   border-radius: 10px;
 }
 
-/* Results winner tiles */
+/* Results Winner Cards */
 .winner-card {
   background-color: color-mix(in srgb, var(--primary-color) 18%, transparent);
 }
@@ -398,7 +421,10 @@ main {
   font-size: 0.85rem;
 }
 
-/* Footer Styles */
+/* ========================================
+   FOOTER
+   ======================================== */
+
 footer {
   background-color: var(--primary-color);
   color: white;
@@ -425,7 +451,10 @@ footer p {
   transform: translateY(-1px);
 }
 
-/* Comment list styles */
+/* ========================================
+   FEATURE STYLES: COMMENTS & PROFILES
+   ======================================== */
+
 .comment-list .list-group-item {
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -438,7 +467,6 @@ footer p {
   border-bottom: none;
 }
 
-/* Profile notifications */
 .profile-notifications {
   border-radius: 12px;
   overflow: hidden;
@@ -460,7 +488,6 @@ footer p {
   color: var(--text-muted);
 }
 
-/* Global notifications (Django messages) */
 .site-notifications {
   display: flex;
   flex-direction: column;
@@ -481,12 +508,10 @@ footer p {
   opacity: 0.7;
 }
 
-/* Hide asterisk on required form fields */
-.form-label .asteriskField {
-  display: none;
-}
+/* ========================================
+   RESPONSIVE MEDIA QUERIES
+   ======================================== */
 
-/* Responsive adjustments */
 @media (max-width: 767px) {
   .hero {
     background-position: center bottom;
