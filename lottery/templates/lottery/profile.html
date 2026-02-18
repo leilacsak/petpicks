@@ -43,10 +43,10 @@
         {% if entries %}
         <div class="row">
             {% for entry in entries %}
-            <div class="col-md-6 mb-4">
-                <div class="card mt-3">
-                    <img src="{{ entry.photo.url }}" class="card-img-top" alt="{{ entry.pet.name }} photo"
-                        style="object-fit: contain; width: 100%; height: 250px;">
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card mt-3 recent-winner-card">
+                    <img src="{{ entry.photo.url }}" class="card-img-top profile-entry-image"
+                        alt="{{ entry.pet.name }} photo">
 
                     <div class="card-body">
                         <p><strong>Round:</strong> {{ entry.round.title }}</p>
