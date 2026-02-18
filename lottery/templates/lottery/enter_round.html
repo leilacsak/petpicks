@@ -35,7 +35,27 @@
                     <h4 class="mb-4">Submit Your Pet's Entry</h4>
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ form|crispy }}
+                        <div class="mb-3">
+                            {{ form.photo|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.pet_name|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.pet_breed|as_crispy_field }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Age</label>
+                            <div class="d-flex gap-2 align-items-center">
+                                {{ form.pet_age_number }}
+                                {{ form.pet_age_unit }}
+                            </div>
+                        </div>
+
+
 
                         <div class="d-flex gap-2 mt-4">
                             <button type="submit" class="btn btn-primary">Submit Entry</button>

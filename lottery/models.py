@@ -31,7 +31,7 @@ class Pet(models.Model):
     )
     name = models.CharField(max_length=50)
     breed = models.CharField(max_length=50, blank=True)
-    age = models.PositiveSmallIntegerField()
+    age = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

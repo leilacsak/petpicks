@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, HTML, Div
 from django import forms
 from django.core.exceptions import ValidationError
 from PIL import Image
@@ -13,19 +15,53 @@ MAX_UPLOAD_SIZE = 5 * 1024 * 1024
 
 
 class EntryCreateForm(forms.ModelForm):
+    AGE_NUMBER_CHOICES = [(i, str(i)) for i in range(1, 101)]
+    AGE_UNIT_CHOICES = [
+        ('year(s)', 'year(s)'),
+        ('month(s)', 'month(s)'),
+        ('week(s)', 'week(s)'),
+    ]
+    
     pet_name = forms.CharField(max_length=50, label="Pet name", required=True)
     pet_breed = forms.CharField(max_length=50, required=True, label="Breed")
-    pet_age = forms.IntegerField(min_value=0, label="Age", required=True)
+    pet_age_number = forms.ChoiceField(
+        choices=AGE_NUMBER_CHOICES,
+        label="Age",
+        required=True
+    )
+    pet_age_unit = forms.ChoiceField(
+        choices=AGE_UNIT_CHOICES,
+        label="",
+        required=True
+    )
 
     class Meta:
         model = Entry
         fields = ["photo"]
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['pet_age_number'].widget.attrs.update({
+            'class': 'form-select',
+            'style': 'width: auto; display: inline-block;'
+        })
+        self.fields['pet_age_unit'].widget.attrs.update({
+            'class': 'form-select',
+            'style': 'width: auto; display: inline-block;'
+        })
 
-    def clean_pet_age(self):
-        age = self.cleaned_data["pet_age"]
-        if age < 0:
-            raise forms.ValidationError("Age must be 0 or higher.")
-        return age
+    def clean(self):
+        cleaned_data = super().clean()
+        age_number = cleaned_data.get("pet_age_number")
+        age_unit = cleaned_data.get("pet_age_unit")
+        
+        if age_number and age_unit:
+            # Combine into a single age string like "2 year(s)"
+            cleaned_data["pet_age"] = f"{age_number} {age_unit}"
+        
+        return cleaned_data
 
     def clean_photo(self):
         photo = self.cleaned_data.get("photo")
@@ -88,9 +124,15 @@ class LotteryRoundForm(forms.ModelForm):
         model = LotteryRound
         fields = ["title", "start_date", "end_date"]
         widgets = {
-            "title": forms.TextInput(attrs={"placeholder": "e.g., February 2026 Draw"}),
-            "start_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
-            "end_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+            "title": forms.TextInput(
+                attrs={"placeholder": "e.g., February 2026 Draw"}
+            ),
+            "start_date": forms.DateTimeInput(
+                attrs={"type": "datetime-local"}
+            ),
+            "end_date": forms.DateTimeInput(
+                attrs={"type": "datetime-local"}
+            ),
         }
 
     def clean(self):
