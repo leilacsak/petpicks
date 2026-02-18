@@ -17,14 +17,14 @@
     </div>
 </section>
 
-<section class="container my-5">
+<section class="container my-5 recent-winners">
     <h2 class="text-center mb-4">Recent Winning Pets</h2>
 
     {% if recent_winners %}
     <div class="row">
         {% for entry in recent_winners %}
         <div class="col-md-4 mb-4">
-            <div class="card h-100">
+            <div class="card h-100 recent-winner-card">
                 {% if entry.photo %}
                 <img src="{{ entry.photo.url }}" class="card-img-top winner-image" style="cursor: pointer;"
                     data-full-image="{{ entry.photo.url }}" alt="{{ entry.pet.name }} winning pet photo">
