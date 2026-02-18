@@ -336,14 +336,14 @@ def comment_edit(request, comment_id):
 
     form = CommentForm(request.POST, instance=comment)
     if form.is_valid():
-        form.save(update_fields=["text"])
+        updated_comment = form.save()
         
         if is_ajax:
             return JsonResponse({
                 "success": True,
                 "comment": {
-                    "id": comment.id,
-                    "text": comment.text,
+                    "id": updated_comment.id,
+                    "text": updated_comment.text,
                 }
             })
 

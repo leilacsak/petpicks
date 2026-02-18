@@ -108,32 +108,43 @@ document.addEventListener('click', function (e) {
         const editForm = commentItem.querySelector('.comment-edit-form');
         const textarea = editForm.querySelector('textarea');
         const newText = textarea.value.trim();
-        const commentId = commentItem.getAttribute('data-comment-id');
 
         if (!newText) {
             alert('Comment cannot be empty.');
             return;
         }
 
-        const formData = new FormData();
-        formData.append('text', newText);
-        const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]').value;
-        formData.append('csrfmiddlewaretoken', csrfToken);
+        // Get CSRF token
+        const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
+        if (!csrfToken) {
+            alert('CSRF token not found. Please refresh the page.');
+            return;
+        }
 
         // Get the edit URL from the edit button
         const editBtn = commentItem.querySelector('.edit-comment-btn');
         const editUrl = editBtn.getAttribute('data-edit-url');
 
+        // Create URL-encoded form data
+        const formData = new URLSearchParams();
+        formData.append('text', newText);
+
         fetch(editUrl, {
             method: 'POST',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: formData,
+            body: formData.toString(),
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    return response.json().then(data => {
+                        throw new Error(JSON.stringify(data.errors) || 'Update failed');
+                    }).catch(() => {
+                        throw new Error('Update failed');
+                    });
                 }
                 return response.json();
             })
