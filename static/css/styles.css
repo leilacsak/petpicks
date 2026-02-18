@@ -245,6 +245,16 @@ main {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Moderation queue cards */
+.moderation-card {
+  border: 1px solid rgba(134, 175, 198, 0.35);
+}
+
+.moderation-image {
+  height: 220px;
+  object-fit: cover;
+}
+
 /* Create draw card */
 .create-draw-card {
   background: linear-gradient(
