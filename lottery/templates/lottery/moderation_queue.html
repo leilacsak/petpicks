@@ -9,8 +9,8 @@
         {% for entry in entries %}
         <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
             <div class="card h-100 shadow-sm moderation-card bg-white rounded-3">
-                <img src="{{ entry.photo.url }}" class="card-img-top w-100 p-2 moderation-image"
-                    alt="{{ entry.pet.name }} photo">
+                <img src="{{ entry.photo.url }}" class="card-img-top w-100 p-2 moderation-image winner-image"
+                    data-full-image="{{ entry.photo.url }}" alt="{{ entry.pet.name }} photo">
 
                 <div class="card-body">
                     <h5 class="card-title fw-semibold">{{ entry.pet.name }}</h5>

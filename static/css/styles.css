@@ -362,6 +362,10 @@ main {
   object-fit: cover;
 }
 
+.winner-image {
+  cursor: pointer;
+}
+
 .recent-winner-card .profile-entry-image {
   object-fit: contain;
   width: 100%;
