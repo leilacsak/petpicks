@@ -346,6 +346,28 @@ footer p {
   border-bottom: none;
 }
 
+/* Profile notifications */
+.profile-notifications {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 12px color-mix(in srgb, var(--primary-color) 18%, white);
+}
+
+.profile-notification-item {
+  border: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--primary-color) 28%, white);
+  background-color: color-mix(in srgb, var(--primary-color) 8%, white);
+  padding: 0.85rem 1rem;
+}
+
+.profile-notification-item:last-child {
+  border-bottom: none;
+}
+
+.profile-notification-date {
+  color: color-mix(in srgb, var(--text-color) 70%, white);
+}
+
 /* Hide asterisk on required form fields */
 .form-label .asteriskField {
   display: none;

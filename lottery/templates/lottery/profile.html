@@ -6,11 +6,11 @@
 
     <h2 class="mb-4">Notifications</h2>
     {% if notifications %}
-    <ul class="list-group mb-4">
+    <ul class="list-group mb-4 profile-notifications">
         {% for n in notifications %}
-        <li class="list-group-item">
+        <li class="list-group-item profile-notification-item">
             {{ n.message }}
-            <div class="small text-muted">{{ n.created_at }}</div>
+            <div class="small text-muted profile-notification-date">{{ n.created_at }}</div>
         </li>
         {% endfor %}
     </ul>
