@@ -31,20 +31,25 @@ def round_list(request):
     form: LotteryRoundForm for creating rounds (None if not staff)
     """
     form = None
-    if request.user.is_staff:
-        if request.method == "POST":
-            form = LotteryRoundForm(request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(
-                    request, "Lottery round created successfully!"
-                )
-                return redirect("round_list")
-        else:
-            form = LotteryRoundForm()
 
+    if request.method == "POST" and not request.user.is_staff:
+        return HttpResponseForbidden("Staff only.")
+
+    if request.user.is_staff:
+        form = LotteryRoundForm(request.POST or None)
+        if request.method == "POST" and form.is_valid():
+            form.save()
+            messages.success(
+                request, "Lottery round created successfully!"
+            )
+            return redirect("round_list")
+
+    now = timezone.now()
     rounds = LotteryRound.objects.filter(
-        status=LotteryRound.Status.ACTIVE).order_by("-start_date")
+        status=LotteryRound.Status.ACTIVE,
+        start_date__lte=now,
+        end_date__gte=now
+        ).order_by("-start_date")
 
     return render(request, "lottery/round_list.html", {
         "rounds": rounds,
