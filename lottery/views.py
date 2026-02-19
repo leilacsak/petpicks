@@ -100,7 +100,9 @@ def enter_round(request, round_id):
             if Entry.objects.filter(pet=pet, round=round_obj).exists():
                 messages.error(
                     request,
-                    "This pet has already been entered in this round."
+                    "This pet has already been entered in this round. "
+                    "If you have multiple pets, try entering a different pet, "
+                    "otherwise please wait for the next round to enter again."
                 )
                 return redirect("round_list")
 
