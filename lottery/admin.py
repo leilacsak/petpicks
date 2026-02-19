@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import LotteryRound, Pet, Entry, Badge, BadgeAward, Notification, Comment
+from .models import (
+    LotteryRound, Pet, Entry, Badge, BadgeAward, Notification, Comment
+)
+from django.utils import timezone
 
 
 @admin.register(LotteryRound)
@@ -7,6 +10,15 @@ class LotteryRoundAdmin(admin.ModelAdmin):
     list_display = ['title', 'status', 'start_date', 'end_date', 'drawn_at']
     list_filter = ['status', 'start_date']
     search_fields = ['title']
+    
+    def get_queryset(self, request):
+        now = timezone.now()
+        LotteryRound.objects.filter(
+            status=LotteryRound.Status.ACTIVE,
+            end_date__lt=now
+        ).update(status=LotteryRound.Status.COMPLETED)
+
+        return super().get_queryset(request)
 
 
 @admin.register(Pet)
@@ -18,7 +30,9 @@ class PetAdmin(admin.ModelAdmin):
 
 @admin.register(Entry)
 class EntryAdmin(admin.ModelAdmin):
-    list_display = ['pet', 'round', 'status', 'is_winner', 'winner_rank', 'submitted_at']
+    list_display = [
+        'pet', 'round', 'status', 'is_winner', 'winner_rank', 'submitted_at'
+    ]
     list_filter = ['status', 'is_winner', 'round', 'submitted_at']
     search_fields = ['pet__name', 'pet__owner__username']
 
