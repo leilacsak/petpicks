@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from lottery.models import LotteryRound, Entry
 from lottery.forms import CommentForm
+from django.db.models import Q
 
 COMMENTS_PER_PAGE = 3
 
@@ -9,11 +10,13 @@ COMMENTS_PER_PAGE = 3
 
 
 def home(request):
-    # Get the latest completed round with winners
+    # Get the latest completed round that has at least 1 winner
     latest_round = (
         LotteryRound.objects.filter(
-            status=LotteryRound.Status.COMPLETED
+            status=LotteryRound.Status.COMPLETED,
+            entries__is_winner=True,
         )
+        .distinct()
         .order_by("-drawn_at")
         .first()
     )
@@ -23,18 +26,17 @@ def home(request):
         recent_winners = (
             Entry.objects.filter(
                 round=latest_round,
-                status=Entry.Status.APPROVED,
                 is_winner=True
             )
             .select_related("pet", "pet__owner")
             .prefetch_related("comments__author")
-            .order_by("?")[:3]  # Get 3 random winners
+            .order_by("winner_rank", "id")[:3]
         )
 
         for entry in recent_winners:
             page_param = f"comments_{entry.id}"
             page_number = request.GET.get(page_param, 1)
-            comments = list(entry.comments.all())
+            comments = list(entry.comments.all().order_by("-created_at"))
             paginator = Paginator(comments, COMMENTS_PER_PAGE)
             entry.comment_page = paginator.get_page(page_number)
 
