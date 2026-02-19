@@ -10,13 +10,6 @@
                     <h2 class="text-center mb-4">Login to your account</h2>
                     <form method="post">
                         {% csrf_token %}
-                        {% if form.non_field_errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {% for error in form.non_field_errors %}
-                            <div>{{ error }}</div>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
                         {{ form|crispy }}
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
