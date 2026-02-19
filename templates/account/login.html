@@ -7,11 +7,17 @@
         <div class="col-sm-10 col-md-7 col-lg-5">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="text-center mb-4">Login</h2>
+                    <h2 class="text-center mb-4">Login to your account</h2>
                     <form method="post">
                         {% csrf_token %}
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
                         {{ form|crispy }}
-
                         <button type="submit" class="btn btn-primary w-100">Login</button>
                     </form>
                 </div>
