@@ -321,15 +321,15 @@ def results(request):
         rounds: QuerySet of completed LotteryRound objects with related entries
     """
     rounds = LotteryRound.objects.filter(
-        status=LotteryRound.Status.COMPLETED
-    ).prefetch_related(
+        status=LotteryRound.Status.COMPLETED,
+        entries__is_winner=True,
+    ).distinct().prefetch_related(
         Prefetch(
             "entries",
-            queryset=Entry.objects.select_related("pet").order_by(
-                "winner_rank",
-                "id",
-            ),
-        ),
+            queryset=Entry.objects.filter(is_winner=True)
+                .select_related("pet")
+                .order_by("winner_rank", "id"),
+        )
     ).order_by("-drawn_at")
     return render(
         request,
