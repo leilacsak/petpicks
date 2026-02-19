@@ -77,16 +77,7 @@ def enter_round(request, round_id):
         id=round_id,
         status=LotteryRound.Status.ACTIVE
     )
-
-    # Check if user has already submitted to this round
-    if Entry.objects.filter(pet__owner=request.user, round=round_obj).exists():
-        messages.error(
-            request,
-            "You have already submitted an entry to this round. "
-            "Only one entry per round is allowed."
-        )
-        return redirect("round_list")
-
+    
     if request.method == "POST":
         form = EntryCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -104,6 +95,14 @@ def enter_round(request, round_id):
                 pet.breed = form.cleaned_data["pet_breed"]
                 pet.age = form.cleaned_data["pet_age"]
                 pet.save(update_fields=["breed", "age"])
+                
+            # Check pet + round entry uniqueness
+            if Entry.objects.filter(pet=pet, round=round_obj).exists():
+                messages.error(
+                    request,
+                    "This pet has already been entered in this round."
+                )
+                return redirect("round_list")
 
             Entry.objects.create(
                 round=round_obj,
