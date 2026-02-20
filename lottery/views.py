@@ -152,8 +152,16 @@ def profile(request):
     )
     # Attach placement (winner rank) for each badge
     for badge in badges:
-        entry = badge.round.entries.filter(pet__owner=request.user, is_winner=True).first()
-        badge.placement = entry.get_rank_display() if entry and entry.winner_rank else None
+        entry = badge.round.entries.filter(
+            pet__owner=request.user,
+            is_winner=True
+        ).first()
+        badge.placement = (
+            entry.get_rank_display()
+            if entry and entry.winner_rank
+            else None
+        )
+        badge.pet_name = entry.pet.name if entry else None
 
     notifications = (
         Notification.objects.filter(user=request.user, dismissed=False)
@@ -288,14 +296,15 @@ def run_draw(request, round_id):
 
     for entry in all_entries:
         if entry.id in winner_ids:
+            rank = entry.get_rank_display()
             msg = (
-                f"Congratulations! '{entry.pet.name}' won the "
+                f"Congratulations! '{entry.pet.name}' won {rank} place in the "
                 f"'{round_obj.title}' lottery! 🏆"
             )
         else:
             msg = (
                 f"Thanks for entering '{round_obj.title}'. "
-                "Not selected this time.Try again next time! 😊"
+                "Not selected this time. Try again next time! 😊"
             )
 
         Notification.objects.get_or_create(

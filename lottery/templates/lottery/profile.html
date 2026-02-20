@@ -68,7 +68,10 @@
             <div class="badge-card-header">
                 <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon" />
                 <div>
-                    <p class="badge-title">{{ badge.badge.name }}</p>
+                            <p class="badge-title">{{ badge.badge.name }}</p>
+                            {% if badge.pet_name %}
+                                <p class="badge-pet">{{ badge.pet_name }}</p>
+                            {% endif %}
                     {% if badge.placement %}
                     <span class="badge-placement">{{ badge.placement }} place</span>
                     {% endif %}
