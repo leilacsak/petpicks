@@ -107,6 +107,11 @@ class BadgeAward(models.Model):
         on_delete=models.CASCADE,
         related_name="badge_awards",
     )
+    pet = models.ForeignKey(
+        Pet,
+        on_delete=models.CASCADE,
+        related_name="badge_awards",
+    )
     badge = models.ForeignKey(
         Badge, on_delete=models.CASCADE, related_name="awards"
     )
@@ -120,8 +125,8 @@ class BadgeAward(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["user", "badge", "round"],
-                name="unique_badge_award_per_round"
+                fields=["user", "pet", "badge", "round"],
+                name="unique_badge_award_per_pet_round"
             ),
         ]
 
@@ -134,6 +139,13 @@ class Notification(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="notifications",
+    )
+    pet = models.ForeignKey(
+        Pet,
+        on_delete=models.CASCADE,
+        related_name="notifications",
+        null=True,
+        blank=True,
     )
     round = models.ForeignKey(
         LotteryRound,
@@ -149,8 +161,8 @@ class Notification(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["user", "round"],
-                name="unique_notification_per_round"
+                fields=["user", "pet", "round"],
+                name="unique_notification_per_pet_round"
             ),
         ]
 

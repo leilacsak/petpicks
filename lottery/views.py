@@ -147,21 +147,28 @@ def profile(request):
 
     badges = list(
         BadgeAward.objects.filter(user=request.user)
-        .select_related("badge", "round")
+        .select_related("badge", "round", "pet")
         .order_by("-awarded_at")
     )
-    # Attach placement (winner rank) for each badge
+    # Only show unique badges per pet per round
+    seen = set()
+    unique_badges = []
     for badge in badges:
-        entry = badge.round.entries.filter(
-            pet__owner=request.user,
-            is_winner=True
-        ).first()
-        badge.placement = (
-            entry.get_rank_display()
-            if entry and entry.winner_rank
-            else None
-        )
-        badge.pet_name = entry.pet.name if entry else None
+        key = (badge.pet.id, badge.round.id)
+        if key not in seen:
+            seen.add(key)
+            entry = badge.round.entries.filter(
+                pet=badge.pet,
+                is_winner=True
+            ).first()
+            badge.placement = (
+                entry.get_rank_display()
+                if entry and entry.winner_rank
+                else None
+            )
+            badge.pet_name = badge.pet.name
+            unique_badges.append(badge)
+    badges = unique_badges
 
     notifications = (
         Notification.objects.filter(user=request.user, dismissed=False)
@@ -283,8 +290,22 @@ def run_draw(request, round_id):
 
         BadgeAward.objects.get_or_create(
             user=entry.pet.owner,
+            pet=entry.pet,
             badge=winner_badge,
             round=round_obj,
+        )
+
+        # Winner notification for this pet
+        rank = entry.get_rank_display()
+        msg = (
+            f"Congratulations! '{entry.pet.name}' won {rank} place in the "
+            f"'{round_obj.title}' lottery! 🏆"
+        )
+        Notification.objects.get_or_create(
+            user=entry.pet.owner,
+            pet=entry.pet,
+            round=round_obj,
+            defaults={"message": msg}
         )
 
     winner_ids = {e.id for e in winners}
@@ -295,23 +316,17 @@ def run_draw(request, round_id):
     ).select_related("pet__owner", "pet")
 
     for entry in all_entries:
-        if entry.id in winner_ids:
-            rank = entry.get_rank_display()
-            msg = (
-                f"Congratulations! '{entry.pet.name}' won {rank} place in the "
-                f"'{round_obj.title}' lottery! 🏆"
-            )
-        else:
+        if entry.id not in winner_ids:
             msg = (
                 f"Thanks for entering '{round_obj.title}'. "
                 "Not selected this time. Try again next time! 😊"
             )
-
-        Notification.objects.get_or_create(
-            user=entry.pet.owner,
-            round=round_obj,
-            defaults={"message": msg}
-        )
+            Notification.objects.get_or_create(
+                user=entry.pet.owner,
+                pet=entry.pet,
+                round=round_obj,
+                defaults={"message": msg}
+            )
 
     round_obj.drawn_at = timezone.now()
     round_obj.status = LotteryRound.Status.COMPLETED
