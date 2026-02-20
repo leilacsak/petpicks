@@ -10,6 +10,11 @@ urlpatterns = [
         name="enter_round",
     ),
     path("profile/", views.profile, name="profile"),
+    path(
+        "notification/dismiss/",
+        views.dismiss_notification,
+        name="dismiss_notification",
+    ),
     path("moderation/", views.moderation_queue, name="moderation_queue"),
     path(
         "moderation/<int:entry_id>/approve/",

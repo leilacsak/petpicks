@@ -1,3 +1,4 @@
+from django.views.decorators.http import require_POST
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Prefetch
 from django.contrib.auth.decorators import login_required
@@ -151,7 +152,7 @@ def profile(request):
     )
 
     notifications = (
-        Notification.objects.filter(user=request.user)
+        Notification.objects.filter(user=request.user, dismissed=False)
         .order_by("-created_at")
     )
 
@@ -497,3 +498,13 @@ def comment_delete(request, comment_id):
 
     next_url = request.POST.get("next") or "results_list"
     return redirect(next_url)
+
+
+@login_required
+@require_POST
+def dismiss_notification(request):
+    notif_id = request.POST.get("id")
+    notif = get_object_or_404(Notification, id=notif_id, user=request.user)
+    notif.dismissed = True
+    notif.save(update_fields=["dismissed"])
+    return JsonResponse({"success": True})
