@@ -62,25 +62,27 @@
     <h2 class=" mt-5 mb-4">Earned Badges</h2>
     <p class="mb-4">You have earned the following badges:</p>
     {% if badges %}
-    <div class="badge-grid mb-4">
-        {% for badge in badges %}
-        <div class="badge-card">
-            <div class="badge-card-header">
-                <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon" />
-                <div>
-                            <p class="badge-title">{{ badge.badge.name }}</p>
-                            {% if badge.pet_name %}
-                                <p class="badge-pet">{{ badge.pet_name }}</p>
-                            {% endif %}
-                    {% if badge.placement %}
-                    <span class="badge-placement">{{ badge.placement }} place</span>
-                    {% endif %}
-                    <p class="badge-meta">{{ badge.round.title }}</p>
+    <div class="row g-4">
+            {% for badge in badges %} 
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+            <div class="badge-card h-100 p-3">
+                <div class="badge-card-header d-flex align-items-start">
+                    <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon me-3" />
+                    <div>
+                        <p class="badge-title mb-1">{{ badge.badge.name }}</p>
+                        {% if badge.pet_name %}
+                        <p class="badge-pet mb-1">{{ badge.pet_name }}</p>
+                        {% endif %}
+                        {% if badge.placement %}
+                        <span class="badge-placement">{{ badge.placement }} place</span>
+                        {% endif %}
+                        <p class="badge-meta mb-0">{{ badge.round.title }}</p>
+                    </div>
                 </div>
+                <p class="badge-date mt-3">Awarded on {{ badge.awarded_at|date:"Y-m-d" }}</p>
             </div>
-            <p class="badge-date">Awarded on {{ badge.awarded_at|date:"Y-m-d" }}</p>
-        </div>
-        {% endfor %}
+            </div>
+            {% endfor %}
     </div>
     {% else %}
     <p>You have no earned badges yet.</p>
