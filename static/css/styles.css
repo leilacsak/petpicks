@@ -6,6 +6,7 @@
 
 :root {
   --primary-color: #86afc6;
+  --heading-color: #2478a8;
   --secondary-color: #c9a477;
   --background-color: #f9f9f9;
   --drawcard-color: #00f7fffb;
@@ -44,7 +45,7 @@ body {
 }
 
 h1 {
-  color: var(--primary-color);
+  color: var(--heading-color);
 }
 
 main {
@@ -259,6 +260,7 @@ main {
 .hero-overlay h1 {
   margin-bottom: 0.75rem !important;
   font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 700;
 }
 
 .hero-overlay p {
@@ -313,14 +315,13 @@ main {
 
 .create-draw-card .card-header {
   background-color: var(--secondary-color);
-  color: #fff;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 }
 
 /* About Page Cards */
 .about-page .about-title {
-  color: var(--primary-color);
+  color: var(--heading-color);
   font-weight: 700;
 }
 
@@ -340,7 +341,6 @@ main {
 
 .about-page .about-steps-list .badge.bg-secondary {
   background-color: var(--secondary-color) !important;
-  color: #fff !important;
   box-shadow: 0 4px 8px var(--secondary-medium);
 }
 
@@ -377,7 +377,7 @@ main {
 }
 
 .recent-winner-card .card-title {
-  color: var(--primary-color);
+  color: var(--heading-color);
   font-weight: 700;
   margin-bottom: 0.25rem;
 }
@@ -419,8 +419,8 @@ main {
   width: 96px;
   height: 96px;
   border-radius: 12px;
-  background-color: #f1f3f5;
-  color: #6c757d;
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
