@@ -10,10 +10,13 @@
         {% for n in notifications %}
         <li class="list-group-item profile-notification-item" data-notification-id="{{ n.id }}">
             <div style="position: relative;">
-                {% if n.pet %}<strong>{{ n.pet.name }}:</strong> {% endif %}{{ n.message }}
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn-close close-notification-btn" aria-label="Close"></button>
+                </div>
+                <div>
+                    {% if n.pet %}<strong>{{ n.pet.name }}:</strong> {% endif %}{{ n.message }}
+                </div>
                 <div class="small text-muted profile-notification-date">{{ n.created_at }}</div>
-                <button type="button" class="close-notification-btn" aria-label="Close"
-                    style="position: absolute; top: 0.5rem; right: 0.5rem; background: none; border: none; font-size: 1.2rem; cursor: pointer;">&times;</button>
             </div>
         </li>
         {% endfor %}
