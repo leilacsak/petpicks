@@ -123,11 +123,11 @@
 
     <!-- Guidelines Modal -->
     <div class="modal fade" id="guidelinesModal" tabindex="-1" aria-labelledby="guidelinesModalLabel"
-        aria-hidden="true">
+        aria-hidden="true" role="dialog" aria-labelledby="guidelinesModalLabel">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header bg-light">
-                    <h5 class="modal-title fw-bold" id="guidelinesModalLabel">🐾 PetPicks Guidelines</h5>
+                    <h2 class="modal-title fw-bold" id="guidelinesModalLabel">🐾 PetPicks Guidelines</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
@@ -188,14 +188,14 @@
 
     <!-- Image Modal -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="imageModalLabel">Pet Image</h5>
+                    <h3 class="modal-title" id="imageModalLabel">Pet Image</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <img id="modalImage" src="" alt="" class="img-fluid rounded"
+                    <img id="modalImage" src="#" alt="Pet image" class="img-fluid rounded"
                         style="max-height: 80vh; object-fit: contain;">
                 </div>
             </div>
