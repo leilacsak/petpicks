@@ -4,6 +4,7 @@
 <div class="container py-4">
     <h1 class="mb-4 text-center">My Profile</h1>
 
+    <!-- Notifications Section -->
     <h2 class=" mt-5 mb-4">Notifications</h2>
     {% if notifications %}
     <ul class="list-group mb-4 profile-notifications">
@@ -18,39 +19,39 @@
         </li>
         {% block extra_js %}
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.close-notification-btn').forEach(function(btn) {
-                btn.addEventListener('click', function(e) {
-                    var li = btn.closest('li[data-notification-id]');
-                    var notifId = li.getAttribute('data-notification-id');
-                    fetch("{% url 'dismiss_notification' %}", {
-                        method: "POST",
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-CSRFToken': getCookie('csrftoken')
-                        },
-                        body: 'id=' + encodeURIComponent(notifId)
-                    }).then(function(resp) {
-                        if (resp.ok) li.style.display = 'none';
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.close-notification-btn').forEach(function (btn) {
+                    btn.addEventListener('click', function (e) {
+                        var li = btn.closest('li[data-notification-id]');
+                        var notifId = li.getAttribute('data-notification-id');
+                        fetch("{% url 'dismiss_notification' %}", {
+                            method: "POST",
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                                'X-CSRFToken': getCookie('csrftoken')
+                            },
+                            body: 'id=' + encodeURIComponent(notifId)
+                        }).then(function (resp) {
+                            if (resp.ok) li.style.display = 'none';
+                        });
                     });
                 });
-            });
 
-            function getCookie(name) {
-                let cookieValue = null;
-                if (document.cookie && document.cookie !== '') {
-                    const cookies = document.cookie.split(';');
-                    for (let i = 0; i < cookies.length; i++) {
-                        const cookie = cookies[i].trim();
-                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                            break;
+                function getCookie(name) {
+                    let cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        const cookies = document.cookie.split(';');
+                        for (let i = 0; i < cookies.length; i++) {
+                            const cookie = cookies[i].trim();
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
                         }
                     }
+                    return cookieValue;
                 }
-                return cookieValue;
-            }
-        });
+            });
         </script>
         {% endblock %}
         {% endfor %}
@@ -59,6 +60,7 @@
     <p>No notifications yet.</p>
     {% endif %}
 
+    <!--Badges Section-->
     <h2 class=" mt-5 mb-4">Earned Badges</h2>
     {% if badges %}
     <div class="badge-grid mb-4">
@@ -79,6 +81,7 @@
     <p>You have no earned badges yet.</p>
     {% endif %}
 
+    <!-- Entries Section -->
     <h2 class=" mt-5 mb-4">My Entries</h2>
     <div>
         {% if entries %}
