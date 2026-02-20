@@ -2,12 +2,8 @@ from django.shortcuts import render
 from django.core.paginator import Paginator
 from lottery.models import LotteryRound, Entry
 from lottery.forms import CommentForm
-from django.db.models import Q
 
 COMMENTS_PER_PAGE = 3
-
-# Create your views here.
-
 
 def home(request):
     # Get the latest completed round that has at least 1 winner
