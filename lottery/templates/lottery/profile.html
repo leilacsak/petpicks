@@ -4,7 +4,6 @@
 <div class="container py-4">
     <h1 class="mb-4 text-center">My Profile</h1>
 
-    <!-- Notifications Section -->
     <h2 class=" mt-5 mb-4">Notifications</h2>
     {% if notifications %}
     <ul class="list-group mb-4 profile-notifications">
@@ -60,16 +59,19 @@
     <p>No notifications yet.</p>
     {% endif %}
 
-    <!--Badges Section-->
     <h2 class=" mt-5 mb-4">Earned Badges</h2>
+    <p class="mb-4">You have earned the following badges:</p>
     {% if badges %}
     <div class="badge-grid mb-4">
         {% for badge in badges %}
         <div class="badge-card">
             <div class="badge-card-header">
-                <span class="badge-icon" aria-hidden="true">🏅</span>
+                <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon" />
                 <div>
                     <p class="badge-title">{{ badge.badge.name }}</p>
+                    {% if badge.placement %}
+                    <span class="badge-placement">{{ badge.placement }} place</span>
+                    {% endif %}
                     <p class="badge-meta">{{ badge.round.title }}</p>
                 </div>
             </div>
@@ -81,13 +83,12 @@
     <p>You have no earned badges yet.</p>
     {% endif %}
 
-    <!-- Entries Section -->
     <h2 class=" mt-5 mb-4">My Entries</h2>
     <div>
         {% if entries %}
         <div class="row">
             {% for entry in entries %}
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-12 col-md-6 col-lg-4 mb-4">
                 <div class="card mt-3 recent-winner-card">
                     <img src="{{ entry.photo.url }}" class="card-img-top profile-entry-image"
                         alt="{{ entry.pet.name }} photo">
@@ -96,7 +97,7 @@
                         <p><strong>Round:</strong> {{ entry.round.title }}</p>
                         <p><strong>Status:</strong> {{ entry.status }}
                             {% if entry.is_winner %}
-                            • Winner 🏆
+                            Winner 🏆
                             {% endif %}
                         </p>
                         <p><strong>Breed:</strong> {{ entry.pet.breed }}</p>

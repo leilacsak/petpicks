@@ -89,10 +89,6 @@ main {
    BADGE COMPONENT
    ======================================== */
 
-.badge.bg-secondary {
-  background-color: var(--secondary-color) !important;
-}
-
 .badge-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -139,8 +135,8 @@ main {
 }
 
 .badge-icon {
-  width: 46px;
-  height: 46px;
+  width: 120px;
+  height: 120px;
   border-radius: 12px;
   display: inline-flex;
   align-items: center;
@@ -174,6 +170,15 @@ main {
   opacity: 0.7;
 }
 
+.badge-icon img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  vertical-align: middle;
+  .badge.bg-secondary {
+    background-color: var(--secondary-color) !important;
+  }
+}
 @keyframes badge-float {
   0%,
   100% {

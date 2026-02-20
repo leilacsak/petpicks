@@ -145,11 +145,15 @@ def profile(request):
         .order_by("-submitted_at")
     )
 
-    badges = (
+    badges = list(
         BadgeAward.objects.filter(user=request.user)
         .select_related("badge", "round")
         .order_by("-awarded_at")
     )
+    # Attach placement (winner rank) for each badge
+    for badge in badges:
+        entry = badge.round.entries.filter(pet__owner=request.user, is_winner=True).first()
+        badge.placement = entry.get_rank_display() if entry and entry.winner_rank else None
 
     notifications = (
         Notification.objects.filter(user=request.user, dismissed=False)
