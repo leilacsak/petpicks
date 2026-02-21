@@ -74,10 +74,12 @@ document.querySelectorAll('.comment-form').forEach(function (form) {
                             </div>
                             <p class="mb-0 comment-text">${data.comment.text}</p>
                             <div class="comment-edit-form" style="display: none;">
-                                <textarea class="form-control form-control-sm mb-2" rows="2">${data.comment.text}</textarea>
+                                <textarea class="form-control form-control-sm mb-2" rows="2" 
+                                id="edit_comment_${data.comment.id}" name="text" 
+                                aria-label="Edit comment">${data.comment.text}</textarea>
                                 <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-primary save-comment-btn">Save</button>
-                                    <button class="btn btn-sm btn-secondary cancel-edit-btn">Cancel</button>
+                                    <button type="button" class="btn btn-sm btn-primary save-comment-btn">Save</button>
+                                    <button type="button" class="btn btn-sm btn-secondary cancel-edit-btn">Cancel</button>
                                 </div>
                             </div>
                         </div>
