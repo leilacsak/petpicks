@@ -39,7 +39,20 @@ document.querySelectorAll('.comment-form').forEach(function (form) {
         e.preventDefault();
 
         const formData = new FormData(form);
-        const commentListContainer = form.closest('.card-body').querySelector('.comment-list');
+        const card = form.closest('.recent-winner-card') || form.closest('.entry-card');
+        let commentListContainer = card ? (card.querySelector('.comment-list') || card.querySelector('.list-group')) : null;
+        if (!commentListContainer) {
+            // As a fallback, try to find it by entry id
+            const entryId = form.getAttribute('action').match(/(\d+)/)?.[1];
+            const section = entryId ? document.getElementById('comments-section-' + entryId) : null;
+            const fallbackContainer = section ? (section.querySelector('.comment-list') || section.querySelector('.list-group')) : null;
+            if (fallbackContainer) {
+                commentListContainer = fallbackContainer;
+            } else {
+                console.error('Comment list container not found');
+                return;
+            }
+        }
         const textInput = form.querySelector('textarea');
 
         fetch(form.action, {
@@ -151,7 +164,9 @@ document.addEventListener('click', function (e) {
         }
 
         // Get CSRF token
-        const csrfToken = document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
+        const csrfTokenInput = commentItem.closest('.card-body').querySelector('[name="csrfmiddlewaretoken"]') || 
+                               document.querySelector('[name="csrfmiddlewaretoken"]');
+        const csrfToken = csrfTokenInput ? csrfTokenInput.value : document.querySelector('[name="csrfmiddlewaretoken"]')?.value;
         if (!csrfToken) {
             alert('CSRF token not found. Please refresh the page.');
             return;
@@ -256,4 +271,34 @@ document.addEventListener('click', function (e) {
                 alert('Error deleting comment. Please try again.');
             });
     }
+});
+
+// Comment pagination AJAX
+function initCommentPagination() {
+    document.querySelectorAll('.comment-pagination').forEach(function(link) {
+        link.onclick = function(e) {
+            e.preventDefault();
+            const entryId = this.dataset.entryId;
+            const url = this.href + '&ajax=1';
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const commentSection = document.getElementById('comments-section-' + entryId);
+                if (commentSection) {
+                    commentSection.innerHTML = html;
+                    // Re-initialize pagination handlers for new links
+                    initCommentPagination();
+                }
+            });
+        };
+    });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', function () {
+    initCommentPagination();
 });

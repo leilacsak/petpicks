@@ -1,0 +1,44 @@
+<div class="list-group comment-list">
+{% for comment in comment_page %}
+<div class="list-group-item" data-comment-id="{{ comment.id }}">
+    <div class="d-flex justify-content-between align-items-start mb-2">
+        <strong>{{ comment.author.username }}</strong>
+        <div class="d-flex gap-2 align-items-center">
+            <small class="text-muted">{{ comment.created_at|date:"Y-m-d H:i" }}</small>
+            {% if comment.author == user %}
+            <button type="button" class="btn btn-sm btn-outline-secondary edit-comment-btn"
+                data-comment-id="{{ comment.id }}" data-edit-url="{% url 'comment_edit' comment.id %}">Edit</button>
+            <button type="button" class="btn btn-sm btn-outline-danger delete-comment-btn"
+                data-comment-id="{{ comment.id }}"
+                data-delete-url="{% url 'comment_delete' comment.id %}">Delete</button>
+            {% endif %}
+        </div>
+    </div>
+    <p class="mb-0 comment-text">{{ comment.text }}</p>
+    <div class="comment-edit-form" style="display: none;">
+        <textarea class="form-control form-control-sm mb-2" rows="2" id="comment-text-{{ comment.id }}" name="text"
+        >{{ comment.text }}</textarea>
+        <div class="d-flex gap-2">
+            <button class="btn btn-sm btn-primary save-comment-btn" data-comment-id="{{ comment.id }}">Save</button>
+            <button class="btn btn-sm btn-secondary cancel-edit-btn" data-comment-id="{{ comment.id }}">Cancel</button>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% if comment_page and comment_page.has_other_pages %}
+<div class="d-flex justify-content-between align-items-center mt-2">
+    {% if comment_page.has_previous %}
+    <a class="btn btn-sm btn-outline-secondary comment-pagination"
+        href="?comments_{{ entry.id }}={{ comment_page.previous_page_number }}"
+        data-entry-id="{{ entry.id }}">Previous</a>
+    {% else %}
+    <span></span>
+    {% endif %}
+    {% if comment_page.has_next %}
+    <a class="btn btn-sm btn-outline-secondary comment-pagination"
+        href="?comments_{{ entry.id }}={{ comment_page.next_page_number }}" data-entry-id="{{ entry.id }}">Next</a>
+    {% endif %}
+</div>
+{% endif %}
+</div>

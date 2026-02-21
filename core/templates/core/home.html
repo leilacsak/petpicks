@@ -42,55 +42,9 @@
                     <p class="small text-muted">{{ entry.round.title }}</p>
                 </div>
                 <div class="card-body pt-0 d-flex flex-column">
-                    <div class="comment-list list-group list-group-flush" data-entry-id="{{ entry.id }}">
-                        {% if entry.comment_page and entry.comment_page.object_list %}
-                        {% for comment in entry.comment_page %}
-                        <div class="list-group-item" data-comment-id="{{ comment.id }}">
-                            <div class="d-flex justify-content-between align-items-start mb-2 gap-2">
-                                <strong>{{ comment.author.username }}</strong>
-                                <div class="d-flex gap-2 align-items-center">
-                                    <small class="text-muted">{{ comment.created_at|date:"Y-m-d H:i" }}</small>
-                                    {% if comment.author == user %}
-                                    <button type="button" class="btn btn-sm btn-outline-secondary edit-comment-btn"
-                                        data-comment-id="{{ comment.id }}"
-                                        data-edit-url="{% url 'comment_edit' comment.id %}">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-outline-danger delete-comment-btn"
-                                        data-comment-id="{{ comment.id }}"
-                                        data-delete-url="{% url 'comment_delete' comment.id %}">Delete</button>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <p class="mb-0 comment-text">{{ comment.text }}</p>
-                            <div class="comment-edit-form" style="display: none;">
-                                <textarea class="form-control form-control-sm mb-2" rows="2"
-                                    id="edit_comment_{{ comment.id }}" name="text"
-                                    aria-label="Edit comment">{{ comment.text }}</textarea>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-sm btn-primary save-comment-btn">Save</button>
-                                    <button class="btn btn-sm btn-secondary cancel-edit-btn">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                        {% else %}
-                        <div class="list-group-item text-muted">No comments yet.</div>
-                        {% endif %}
+                    <div id="comments-section-{{ entry.id }}">
+                        {% include "core/_comments_section.html" with entry=entry comment_page=entry.comment_page user=user %}
                     </div>
-
-                    {% if entry.comment_page and entry.comment_page.has_other_pages %}
-                    <div class="d-flex justify-content-between align-items-center mt-2">
-                        {% if entry.comment_page.has_previous %}
-                        <a class="btn btn-sm btn-outline-secondary"
-                            href="?comments_{{ entry.id }}={{ entry.comment_page.previous_page_number }}">Newer</a>
-                        {% else %}
-                        <span></span>
-                        {% endif %}
-                        {% if entry.comment_page.has_next %}
-                        <a class="btn btn-sm btn-outline-secondary"
-                            href="?comments_{{ entry.id }}={{ entry.comment_page.next_page_number }}">Older</a>
-                        {% endif %}
-                    </div>
-                    {% endif %}
 
                     {% if user.is_authenticated %}
                     <form method="post" action="{% url 'comment_create' entry.id %}" class="comment-form">
