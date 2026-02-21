@@ -31,7 +31,7 @@
             <div class="card active-round-card">
                 <div class="card-body">
                     <div>
-                        <h3 class="h5">{{ round.title }}</h3>
+                        <h2 class="h5">{{ round.title }}</h2>
                         <p>
                             Starts: {{ round.start_date }}<br>
                             Ends: {{ round.end_date }}
@@ -50,7 +50,7 @@
     </div>
     {% else %}
     <div class="alert alert-info" role="alert">
-        <h4 class="alert-heading">All Clear!</h4>
+        <h2 class="alert-heading h4">All Clear!</h2>
         <p>No active rounds at the moment.</p>
     </div>
     {% endif %}
