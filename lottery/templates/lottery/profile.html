@@ -66,8 +66,8 @@
     <p class="mb-4">You have earned the following badges:</p>
     {% if badges %}
     <div class="row g-4">
-            {% for badge in badges %} 
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
+        {% for badge in badges %}
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
             <div class="badge-card h-100 p-3">
                 <div class="badge-card-header d-flex align-items-start">
                     <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon me-3" />
@@ -84,8 +84,8 @@
                 </div>
                 <p class="badge-date mt-3">Awarded on {{ badge.awarded_at|date:"Y-m-d" }}</p>
             </div>
-            </div>
-            {% endfor %}
+        </div>
+        {% endfor %}
     </div>
     {% else %}
     <p>You have no earned badges yet.</p>
