@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 {% load dict_get %}
 
+
 {% block content %}
 
 <section class="hero">
@@ -91,7 +92,7 @@
                     {% endif %}
 
                     {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'comment_create' entry.id %}">
+                    <form method="post" action="{% url 'comment_create' entry.id %}" class="comment-form">
                         {% csrf_token %}
                         {{ comment_forms|dict_get:entry.id|crispy }}
                         <button class="btn btn-primary" type="submit">Post</button>

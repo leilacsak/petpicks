@@ -235,7 +235,7 @@ def reject_entry(request, entry_id):
     Args:
         entry_id: Primary key of the Entry to reject
     """
-    entry = get_object_or_404(Entry, id=entry_id)
+    entry = get_object_or_400(Entry, id=entry_id)
     entry.status = Entry.Status.REJECTED
     entry.save()
     return redirect("moderation_queue")
@@ -398,7 +398,9 @@ def comment_create(request, entry_id):
     if request.method != "POST":
         return redirect("results_list")
 
-    form = CommentForm(request.POST)
+    # Use the same prefix as in the template
+    prefix = f"entry_{entry_id}"
+    form = CommentForm(request.POST, prefix=prefix)
     is_ajax = request.headers.get("X-Requested-With") == "XMLHttpRequest"
 
     if form.is_valid():
