@@ -3,7 +3,9 @@ from django.core.paginator import Paginator
 from lottery.models import LotteryRound, Entry
 from lottery.forms import CommentForm
 
+
 COMMENTS_PER_PAGE = 3
+
 
 def home(request):
     # Get the latest completed round that has at least 1 winner
@@ -36,13 +38,17 @@ def home(request):
             paginator = Paginator(comments, COMMENTS_PER_PAGE)
             entry.comment_page = paginator.get_page(page_number)
 
+    comment_forms = {}
+    for entry in recent_winners:
+        comment_forms[entry.id] = CommentForm(prefix=f"entry_{entry.id}")
+
     return render(
         request,
         "core/home.html",
         {
             "latest_round": latest_round,
             "recent_winners": recent_winners,
-            "comment_form": CommentForm(),
+            "comment_forms": comment_forms,
         }
     )
 
