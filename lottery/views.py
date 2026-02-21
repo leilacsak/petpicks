@@ -235,7 +235,7 @@ def reject_entry(request, entry_id):
     Args:
         entry_id: Primary key of the Entry to reject
     """
-    entry = get_object_or_400(Entry, id=entry_id)
+    entry = get_object_or_404(Entry, id=entry_id)
     entry.status = Entry.Status.REJECTED
     entry.save()
     return redirect("moderation_queue")
@@ -538,3 +538,57 @@ def dismiss_notification(request):
     notif.dismissed = True
     notif.save(update_fields=["dismissed"])
     return JsonResponse({"success": True})
+
+
+@login_required
+@require_POST
+def delete_entry(request, entry_id):
+    entry = get_object_or_404(Entry, id=entry_id, pet__owner=request.user)
+    if entry.round.status != LotteryRound.Status.ACTIVE:
+        messages.error(
+            request,
+            "You cannot delete entries for completed rounds."
+        )
+        return redirect("profile")
+    entry.delete()
+    messages.success(request, "Entry deleted.")
+    return redirect("profile")
+
+
+@login_required
+def edit_entry(request, entry_id):
+    entry = get_object_or_404(Entry, id=entry_id, pet__owner=request.user)
+
+    if entry.round.status != LotteryRound.Status.ACTIVE:
+        messages.error(
+            request,
+            "You cannot edit entries for completed rounds."
+        )
+        return redirect("profile")
+
+    if request.method == "POST":
+        form = EntryCreateForm(request.POST, request.FILES, instance=entry)
+        if form.is_valid():
+            updated_entry = form.save(commit=False)
+            # Update related pet fields
+            pet = entry.pet
+            pet.name = form.cleaned_data.get("pet_name", pet.name)
+            pet.breed = form.cleaned_data.get("pet_breed", pet.breed)
+            pet.age = form.cleaned_data.get("pet_age", pet.age)
+            pet.save()
+            updated_entry.status = Entry.Status.PENDING
+            updated_entry.save()
+            messages.success(request, "Entry updated and sent for moderation.")
+            return redirect("profile")
+    else:
+        form = EntryCreateForm(instance=entry)
+
+    return render(
+        request,
+        "lottery/enter_round.html",
+        {
+            "form": form,
+            "round": entry.round,
+            "entry": entry,
+        }
+    )

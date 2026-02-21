@@ -32,7 +32,14 @@
         <div class="col-lg-8">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h4 class="mb-4">Submit Your Pet's Entry</h4>
+                    <h2 class="mb-4 h4">Submit Your Pet's Entry</h2>
+                    <h2 class="mb-4 h5">
+                        {% if entry %}
+                        Edit Entry for {{ round.title }}
+                        {% else %}
+                        Enter Round: {{ round.title }}
+                        {% endif %}
+                    </h2>
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         <div class="mb-3">
@@ -59,7 +66,7 @@
 
                         <div class="d-flex gap-2 mt-4">
                             <button type="submit" class="btn btn-primary">Submit Entry</button>
-                            <a href="{% url 'round_list' %}" class="btn btn-secondary ms-auto">Cancel</a>
+                            <a href="{% url 'profile' %}" class="btn btn-secondary ms-auto">Cancel</a>
                         </div>
                     </form>
                 </div>

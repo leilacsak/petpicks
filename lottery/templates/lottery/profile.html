@@ -113,6 +113,15 @@
                         <p><strong>Age:</strong> {{ entry.pet.age }}</p>
                         <p><strong>Submitted:</strong> {{ entry.submitted_at }}</p>
                     </div>
+                    {% if entry.round.status == 'ACTIVE' %}
+                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                        <a href="{% url 'edit_entry' entry.id %}" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+                        <form action="{% url 'delete_entry' entry.id %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
