@@ -121,6 +121,7 @@ class LotteryCoreFeatureTests(TestCase):
             },
             follow=True,
         )
+
         self.assertEqual(
             Entry.objects.filter(round=self.active_round).count(), 1
         )
@@ -142,7 +143,47 @@ class LotteryCoreFeatureTests(TestCase):
             Entry.objects.filter(round=self.active_round).count(), 1
         )
         self.assertTrue(
-            ("already been entered" in resp.content.decode().lower())
+            "already been entered" in resp.content.decode().lower()
+        )
+
+    def test_user_can_enter_same_round_with_different_pets(self):
+        self.client.login(username="user1", password="pass12345")
+
+        # First pet
+        resp1 = self.client.post(
+            reverse("enter_round", args=[self.active_round.id]),
+            data={
+                "pet_name": "Bella",
+                "pet_breed": "Golden Retriever",
+                "pet_age_number": "2",
+                "pet_age_unit": "year(s)",
+                "photo": self._upload_photo("pet1.png"),
+            },
+            follow=True,
+        )
+        self.assertEqual(resp1.status_code, 200)
+        self.assertEqual(
+            Entry.objects.filter(round=self.active_round).count(), 1
+        )
+
+        # Second pet (different name)
+        resp2 = self.client.post(
+            reverse("enter_round", args=[self.active_round.id]),
+            data={
+                "pet_name": "Max",
+                "pet_breed": "Labrador",
+                "pet_age_number": "3",
+                "pet_age_unit": "year(s)",
+                "photo": self._upload_photo("pet2.png"),
+            },
+            follow=True,
+        )
+        self.assertEqual(resp2.status_code, 200)
+        self.assertEqual(
+            Entry.objects.filter(round=self.active_round).count(), 2
+        )
+        self.assertFalse(
+            "already been entered" in resp2.content.decode().lower()
         )
 
     # -------------------------
@@ -249,9 +290,5 @@ class LotteryCoreFeatureTests(TestCase):
         # Confirm warning message appeared
         self.assertTrue(
             ("already been drawn" in resp.content.decode().lower())
-       
+    
         )
-
-        print(resp.context['form'].errors)
-
-
