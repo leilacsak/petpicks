@@ -141,7 +141,8 @@ CSRF_TRUSTED_ORIGINS = [
 # Heroku HTTPS fix
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-SECURE_SSL_REDIRECT = True
+# Only redirect to HTTPS in production
+SECURE_SSL_REDIRECT = not DEBUG
 
 
 # Password validation
