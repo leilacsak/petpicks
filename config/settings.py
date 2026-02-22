@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
     '.herokuapp.com',
+    'petpicks-891ee75cb3ef.herokuapp.com/',
 ]
 
 # Application definition
@@ -134,6 +135,7 @@ DATABASES = {
 CSRF_TRUSTED_ORIGINS = [
     "https://*.codeinstitute-ide.net/",
     "https://*.herokuapp.com"
+    "https://petpicks-891ee75cb3ef.herokuapp.com/",
 ]
 
 # Password validation
