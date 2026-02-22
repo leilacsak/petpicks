@@ -4,6 +4,8 @@ from django.template.loader import render_to_string
 from django.http import HttpResponse
 from lottery.models import LotteryRound, Entry
 from lottery.forms import CommentForm
+from django.contrib import messages
+from .forms import ContactForm
 
 
 COMMENTS_PER_PAGE = 3
@@ -44,6 +46,19 @@ def home(request):
     for entry in recent_winners:
         comment_forms[entry.id] = CommentForm(prefix=f"entry_{entry.id}")
 
+    contact_form = ContactForm()
+    if request.method == "POST":
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            # Here would typically handle the form submission
+            messages.success(
+                request,
+                "Your message has been sent! Thank you for contacting us."
+            )
+            contact_form = ContactForm()  # Reset form after success
+        else:
+            messages.error(request, "Please correct the errors below.")
+
     if request.GET.get('ajax') == '1':
         # Find the entry_id from the query string keys
         entry_id = None
@@ -76,9 +91,25 @@ def home(request):
             "latest_round": latest_round,
             "recent_winners": recent_winners,
             "comment_forms": comment_forms,
+            "contact_form": contact_form,
         }
     )
 
 
 def about(request):
     return render(request, "core/about.html")
+
+
+def contact(request):
+    contact_form = ContactForm()
+    if request.method == "POST":
+        contact_form = ContactForm(request.POST)
+        if contact_form.is_valid():
+            messages.success(
+                request,
+                "Your message has been sent! Thank you for contacting us."
+            )
+            contact_form = ContactForm()  # Reset form after success
+        else:
+            messages.error(request, "Please correct the errors below.")
+    return render(request, "core/contact.html", {"contact_form": contact_form})
