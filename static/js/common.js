@@ -1,3 +1,6 @@
+/* jshint esversion: 6 */
+/* global bootstrap */
+
 // Image modal functionality - available on all pages
 document.querySelectorAll('.winner-image').forEach(function (img) {
     img.addEventListener('click', function () {
