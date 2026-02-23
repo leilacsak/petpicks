@@ -1,3 +1,5 @@
+/* jshint esversion: 11 */
+
 // Handle "Join Now" button for authenticated users
 const joinNowBtn = document.getElementById('joinNowBtn');
 if (joinNowBtn) {
