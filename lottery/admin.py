@@ -10,7 +10,7 @@ class LotteryRoundAdmin(admin.ModelAdmin):
     list_display = ['title', 'status', 'start_date', 'end_date', 'drawn_at']
     list_filter = ['status', 'start_date']
     search_fields = ['title']
-    
+
     def get_queryset(self, request):
         now = timezone.now()
         LotteryRound.objects.filter(
