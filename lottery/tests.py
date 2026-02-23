@@ -48,7 +48,7 @@ class LotteryCoreFeatureTests(TestCase):
         Image.new("RGB", (1, 1)).save(f, format="PNG")
         f.seek(0)
         return SimpleUploadedFile(name, f.read(), content_type="image/png")
-    
+
     # -------------------------
     # AUTH ACCESS
     # -------------------------
@@ -290,5 +290,5 @@ class LotteryCoreFeatureTests(TestCase):
         # Confirm warning message appeared
         self.assertTrue(
             ("already been drawn" in resp.content.decode().lower())
-    
+
         )
