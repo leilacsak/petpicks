@@ -4,6 +4,7 @@
 <div class="container py-4">
     <h1 class="mb-4 text-center">My Profile</h1>
 
+    <!--Notifications Section-->
     <h2 class=" mt-5 mb-4">Notifications</h2>
     {% if notifications %}
     <ul class="list-group mb-4 profile-notifications">
@@ -62,6 +63,7 @@
     <p>No notifications yet.</p>
     {% endif %}
 
+    <!--Earned Badges Section-->
     <h2 class=" mt-5 mb-4">Earned Badges</h2>
     <p class="mb-4">You have earned the following badges:</p>
     {% if badges %}
@@ -70,7 +72,7 @@
         <div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4">
             <div class="badge-card h-100 p-3">
                 <div class="badge-card-header d-flex align-items-start">
-                    <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon me-3"/>
+                    <img src="/static/images/winnerBadge.png" alt="Winner Badge" class="badge-icon me-3">
                     <div>
                         <p class="badge-title mb-1">{{ badge.badge.name }}</p>
                         {% if badge.pet_name %}
@@ -91,6 +93,7 @@
     <p>You have no earned badges yet.</p>
     {% endif %}
 
+    <!--My Entries Section-->
     <h2 class=" mt-5 mb-4">My Entries</h2>
     <div>
         {% if entries %}
