@@ -54,4 +54,3 @@ class CorePageTests(TestCase):
         }, follow=True)
         self.assertContains(response, "Please correct the errors below.")
         self.assertTrue(response.context["contact_form"].errors)
-
