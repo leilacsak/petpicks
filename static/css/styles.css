@@ -5,12 +5,12 @@
    ======================================== */
 
 :root {
-  --primary-color: #86afc6;
+  --primary-color: #184763;
   --heading-color: #2478a8;
   --secondary-color: #c9a477;
   --background-color: #f9f9f9;
-  --drawcard-color: rgba(0, 247, 255, 0.98);
-  --text-color: #333;
+  --drawcard-color: #00f7fffa;
+  --text-color: #1c1c1c;
   --font-family: "Nunito", sans-serif;
 
   --primary-light: #e7f1f6;
@@ -69,6 +69,7 @@ main {
 
 .btn-primary:hover {
   background-color: var(--secondary-color);
+  color: var(--text-color);
 }
 
 .guidelines-btn {
@@ -80,7 +81,7 @@ main {
 }
 
 .guidelines-btn:hover {
-  color: var(--text-color);
+  color: var(--drawcard-color);
 }
 
 .form-label .asteriskField {
@@ -220,7 +221,7 @@ main {
 }
 
 .nav-link:hover {
-  color: var(--text-color) !important;
+  color: var(--drawcard-color) !important;
 }
 
 .navbar-toggler {
@@ -481,7 +482,7 @@ footer p {
 }
 
 .footer-social a:hover {
-  color: var(--text-color);
+  color: var(--drawcard-color);
   transform: translateY(-1px);
 }
 
