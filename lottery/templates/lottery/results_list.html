@@ -14,7 +14,7 @@
                         <strong>Drawn:</strong> {{ round.drawn_at|date:"Y-m-d H:i" }}
                     </p>
 
-                    <h6 class="mt-3">Winners:</h6>
+                    <h3 class="mt-3 h6">Winners:</h3>
                     <div class="row g-3">
                         {% for entry in round.entries.all %}
                         {% if entry.is_winner %}
@@ -28,7 +28,7 @@
                                 <div class="winner-photo-placeholder mb-2">No photo</div>
                                 {% endif %}
                                 <div class="d-flex justify-content-center align-items-center flex-wrap gap-2">
-                                    <h5 class="mb-0">{{ entry.pet.name }}</h5>
+                                    <h3 class="mb-0 h5">{{ entry.pet.name }}</h3>
                                     {% if entry.winner_rank %}
                                     <span class="badge bg-secondary">{{ entry.get_rank_display }}</span>
                                     {% endif %}
