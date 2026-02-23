@@ -14,7 +14,7 @@ class ContactForm(forms.Form):
         widget=forms.EmailInput(attrs={"autocomplete": "email"})
     )
     message = forms.CharField(
-        widget=forms.Textarea(attrs={"rows": 4, "autocomplete": "message"}),
+        widget=forms.Textarea(attrs={"rows": 4, "autocomplete": "off"}),
         required=True,
         label="Message"
     )
